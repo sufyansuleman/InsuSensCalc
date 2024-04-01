@@ -1,7 +1,11 @@
 #' Example Dataset
 #'
-#' Description of what this dataset is and what it includes.
-#'
+#' Names, description and units (where needed) of the variables. 
+#' Name of the variables in the input data should be the same as the ones listed below for accurately calculating the indices.
+#' Otherwise it will result in Error.
+#' If a variable is missing for the category it will not calculate the any of the index for that category.
+#' This can be handeld by creating the variable column with NA vlaues
+#' If the values are missing for a variable it will set the value to NA and calculate the remaining indices and return the NA value for the missing variable.  
 #' @format A data frame with 3 rows (number of observations) and 17 columns (variables, can vary for every data):
 #' \describe{
 #'   \item{age}{numeric Age of the individual (years)}

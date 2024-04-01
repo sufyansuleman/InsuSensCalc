@@ -17,22 +17,27 @@ test_that("isi_calculator function works correctly", {
   # Example test cases
   
   # Test 1: Ensure function works with a dataframe input
-  data <- data.frame(example_data)  # Replace ... with appropriate test data
+  data <- data.frame(example_data)  
   result <- isi_calculator(data)
   expect_true(is.data.frame(result), "Result should be a dataframe")
   
   # Test 2: Test specific output for fasting category
-  data <- data.frame(example_data)  # Replace ... with appropriate test data
-  result <- isi_calculator(data, categories = "fasting")
-  # Add more expect_ statements to verify specific output
+  data <- data.frame(example_data)  
+  result <- isi_calculator(data, category = "fasting")
+ 
   
   # Test 3: Test specific output for ogtt category
-  data <- data.frame(example_data)  # Replace ... with appropriate test data
-  result <- isi_calculator(data, categories = "ogtt")
-  # Add more expect_ statements to verify specific output
+  data <- data.frame(example_data)  
+  result <- isi_calculator(data, category = "ogtt")
+
   
   # Test 4: Test specific output for adipo category
-  data <- data.frame(example_data)  # Replace ... with appropriate test data
-  result <- isi_calculator(data, categories = "adipo")
-  # Add more expect_ statements to verify specific output
+  data <- data.frame(example_data)  
+  result <- isi_calculator(data, category = "adipo")
+ 
+  
+  # Test 4: Test specific output for tracer_dxa category
+  data <- data.frame(example_data)  
+  result <- isi_calculator(data, category = "tracer_dxa")
+  
 })

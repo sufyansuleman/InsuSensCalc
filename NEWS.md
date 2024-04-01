@@ -20,9 +20,14 @@
   - Insulin Sensitivity Index at 120 min
   - And more, adapting calculations based on available time points.
 
-- Utilizes **lipid** (adipo) measurements like triglycerides and HDL cholesterol for indices such as:
+- Utilizes **lipid** (adipo) measurements like triglycerides, free fatty acids and HDL cholesterol for indices such as:
   - Visceral Adiposity Index (VAI) for Men and Women (inversed)
   - Lipid Accumulation Product (LAP)
+  - ATIRI_inv
+  
+  - Utilizes **tracer and dxa based data** measurements like rate of glycerol, palmitate and dxa based fat mass for indices such as:
+  - LIRI_inv
+  - Lipo_inv
   - TyG Index (inversed)
   - And other adipose-related indices.
 

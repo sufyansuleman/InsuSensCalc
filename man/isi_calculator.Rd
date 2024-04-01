@@ -4,21 +4,51 @@
 \alias{isi_calculator}
 \title{Insulin Sensitivity Indices Calculator}
 \usage{
-isi_calculator(data, categories = c("fasting", "ogtt", "adipo"))
+isi_calculator(data, category = c("fasting", "ogtt", "adipo", "tracer_dxa"))
 }
 \arguments{
 \item{data}{A dataframe containing the required variables for calculation. This includes insulin
 and glucose measurements at fasting (0 min), 30 min, and 120 min post-glucose load, as well as
-triglycerides, HDL cholesterol, and other metabolic parameters as needed.}
+triglycerides, HDL cholesterol, and other metabolic parameters as needed.
+Name of the variables in the input data should be the same as the ones listed below in details (or check with ?example_data) for accurately calculating the indices.
+Otherwise it will result in Error.
+If a variable is missing for the category it will not calculate any of the index for that category.
+This can be handled by creating the missing variable column but with simulated, random or "NA" values
+If variable column exist but the values are missing \code{isi_calculator} function will set the value to NA in internal operation and calculate the remaining indices while returning the NA value for indices where the the missing variable was required.}
 
-\item{categories}{A character vector specifying which categories of indices to calculate.
-If you have only fasting insulin and glucose values choose "fasting" category
-If you also have OGTT based vlaues choose "ogtt" category, if you have 0, 30, 120 it calcualte indices based on these values, if 30 min values are missing then it will only calcualte the indices based on 0 and 120 min values.
-If you have lipid values like TG, FFA and HDL-C then choose "adipo" category.
-OGTT and adipo categories also use anthropometric value ssuch as age, sex, weight, bmi and waist.
-If you want to calculate indices for all categories then use c("fasting", "ogtt", "adipo") as input.
+\item{category}{A character vector specifying which category of indices
+to calculate. If you have only fasting insulin and glucose values choose
+"fasting" category. If you also have OGTT based values choose "ogtt" category;
+it calculates indices based on these values, if 30 min values are missing
+then it will only calculate the indices based on 0 and 120 min values.
+If you have lipid values like TG, FFA, and HDL-C then choose "adipo" category.
+OGTT and adipo category also use anthropometric values such as age, sex, weight, bmi, and waist.
+If you want to calculate indices for all categories then leave the argument empty or use the a list of category like c("fasting", "ogtt", "adipo", "tracer_dxa").
+c("fasting", "ogtt", "adipo") as input.}
+}
+\value{
+A data frame containing the IS indices calculated for the specified category/ies.
+The values are returned raw without any kind of normalization or transformation.
+For further processing especially the statistical testing and visualization, it is recommended to normalize the values.
+As most of them are on different scales
+}
+\description{
+Calculates surrogate insulin sensitivity indices based on fasting, OGTT, and lipid (adipo) values values.
+}
+\details{
+The function requires specific columns in the data for each category:
+\itemize{
+\item \code{fasting}: \code{"G0", "I0"}
+\item \code{ogtt}: \code{"G0", "I0", "G120", "I120", "G30", "I30", "age", "sex", "bmi", "weight"}
+\item \code{adipo}: \code{"G0", "I0", "G120", "I120", "G30", "I30", "age", "sex", "bmi", "weight", "TG", "HDL_c", "FFA", "waist"}
+\item \code{tracer_dxa}: This category includes all of the columns required for \code{adipo}
+plus specific tracer and DXA measures: \code{"rate_palmitate", "rate_glycerol", "fat_mass"}.
+Ensure that the data frame contains these columns when selecting this category for accurate calculation.
+}
 
-Supported options are "fasting", "ogtt", and "adipo". Specific indices calculated for each category are:
+Supported options for \code{category} are "fasting", "ogtt", "adipo", and "tracer_dxa".
+Specific indices calculated for each category are detailed within each category section.
+
 \itemize{
 \item{\strong{fasting}:}{
 \itemize{
@@ -73,6 +103,13 @@ Supported options are "fasting", "ogtt", and "adipo". Specific indices calculate
 \item{Belfiore_inv_FFA: Belfiore Index for FFA converted to IS : Inversed to represent IS}
 }
 }
+\item{\strong{tracer_dxa}:}{
+\itemize{
+\item{LIRI_inv: Liver Insulin Resistance Index converted to IS : Inversed to represent IS}
+\item{Lipo_inv: Lipolysis Index converted to IS : Inversed to represent IS}
+\item{ATIRI_inv: Adipose Tissue Insulin Resistance Index converted to IS : Inversed to represent IS}
+}
+}
 }
 
 The calculation of most indices follows established formulas documented in the references, with units and other details conforming to the standards set forth in the literature. Although not all original references are explicitly provided, they were consulted individually for each index calculation.
@@ -81,31 +118,22 @@ References:
 \itemize{
 \item Amalia Gastaldelli (2022). (PubMed: \url{https://onlinelibrary.wiley.com/doi/10.1002/oby.23503})
 \item Carlos Lorenzo (2010). (PubMed: \url{https://academic.oup.com/jcem/article/95/11/5082/2835314})
-}}
 }
-\value{
-A data frame containing the IS indices calculated for the specified category/ies.
-The values are returned raw without any kind of normalization or transformation.
-For further processing especially the statistical testing and visualization, it is recommended to normalize the values.
-As most of them are on different scales
-}
-\description{
-Calculates surrogate insulin sensitivity indices based on fasting, OGTT, and lipid (adipo) values values.
 }
 \examples{
 data(example_data)
 # Example usage of the isi_calculator function
 # Run the isi_calculator function with the sample data
 # run for each category separately
-result <- isi_calculator(example_data, categories = "fasting")
-result <- isi_calculator(example_data, categories = "ogtt")
-result <- isi_calculator(example_data, categories = "adipo")
-# OR all three together
-result <- isi_calculator(example_data, categories = c("adipo", "ogtt", "fasting"))
+result <- isi_calculator(example_data, category = "fasting")
+result <- isi_calculator(example_data, category = "ogtt")
+result <- isi_calculator(example_data, category = "adipo")
+result <- isi_calculator(example_data, category = "tracer_dxa")
+# OR all four together if you all the required columns
+result <- isi_calculator(example_data, category = c("adipo", "ogtt", "fasting", "tracer_dxa"))
 # View the results
 print(result)
-# use ?isi_calculator to see the full documentation of the function
-# use ?example_data to see the sample data description
+# use ?example_data to see the sample data column names and description
 
 }
 \keyword{internal}
