@@ -1,0 +1,28 @@
+#' Example Dataset
+#'
+#' Description of what this dataset is and what it includes.
+#'
+#' @format A data frame with 3 rows (number of observations) and 17 columns (variables, can vary for every data):
+#' \describe{
+#'   \item{age}{numeric Age of the individual (years)}
+#'   \item{sex}{factor Sex of the individual (1 for male, 2/0 for female)}
+#'   \item{I0}{numeric Fasting insulin level (pmol/L)}
+#'   \item{G0}{numeric Fasting glucose level (mmol/L)}
+#'   \item{I30}{numeric Insulin level at 30 minutes (pmol/L)}
+#'   \item{G30}{numeric Glucose level at 30 minutes (mmol/L)}
+#'   \item{I120}{numeric Insulin level at 120 minutes (pmol/L)}
+#'   \item{G120}{numeric Glucose level at 120 minutes (mmol/L)}
+#'   \item{HDL_c}{numeric HDL cholesterol level (mmol/L)}
+#'   \item{FFA}{numeric Free fatty acid level (mmol/L)}
+#'   \item{waist}{numeric Waist circumference of the individual (cm)}
+#'   \item{weight}{numeric Weight of the individual (kg)}
+#'   \item{bmi}{numeric Body mass index of the individual (kg/m^2)}
+#'   \item{TG}{numeric Triacylglycerides level (mmol/L)}
+#'   \item{rate_palmitate}{numeric Rate of palmitate (arbitrary units)}
+#'   \item{rate_glycerol}{numeric Rate of glycerol (arbitrary units)}
+#'   \item{fat_mass}{numeric Fat mass of the individual (kg)}
+#' }
+#' @source Data is a simulated dataset for illustrative purposes.
+"example_data"
+
+

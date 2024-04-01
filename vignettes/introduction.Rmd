@@ -1,0 +1,43 @@
+---
+title: "introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(InsuSensCalc)
+```
+
+**isi_calculator Package Overview**
+
+The isi_calculator package is a robust tool for metabolic research and clinical settings, designed to calculate various insulin sensitivity indices accurately. It facilitates the assessment of insulin sensitivity from diverse metabolic data, including fasting samples, oral glucose tolerance tests (OGTT), and lipid parameters. The package uniquely converts insulin resistance (IR) indices to insulin sensitivity (IS) metrics, providing a unified scale for interpretation across different studies.
+
+Adaptable to specific research or clinical needs, isi_calculator supports a wide array of insulin sensitivity calculations, automating and ensuring accuracy and reproducibility. It spans well-known to advanced indices like HOMA-IR, Matsuda Index, and Visceral Adiposity Index. The isi_calculator package advances metabolic health research and personalized medicine by offering an efficient, precise tool for insulin sensitivity analysis.
+
+Key features include:
+
+**Versatile Data Handling:** It accepts a wide range of metabolic data inputs and performs unit conversions necessary for accurate index calculation.
+for example,
+
+the conversion of gluccose from mmol/L to mg/dL.
+the conversion of insulin from pmol/L to µU/ml.
+the conversion of triglycerides from mmol/L to mg/dL.
+the conversion of HDL cholesterol from mmol/L to mg/dL.
+the conversion of FFA to AUC for Belfiore_inv_FFA calcualtion
+
+
+**Customizable Index Selection:** Users can choose specific categories of indices to calculate, such as fasting, OGTT, or adipose tissue-based indices, or a combination of all.
+**Automated Index Calculation:** The package automates the calculation of various insulin sensitivity indices, eliminating the need for manual computation.
+
+**Comprehensive Index Calculation:** Beyond traditional fasting glucose and insulin levels, it integrates data from OGTT and adipose tissue measurements to compute a broad spectrum of insulin sensitivity indices.
+**Inverts IR to IS Indices:** Converts insulin resistance metrics to insulin sensitivity measures, facilitating easier interpretation.

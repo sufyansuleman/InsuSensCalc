@@ -1,0 +1,21 @@
+Package: InsuSensCalc
+Title: Comprehensive Suite for Insulin Sensitivity Indices Calculation
+Version: 0.0.1
+Authors@R: person("sufyan", "suleman", , "sufyansuleman@hotmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6612-6915"))
+Description: The "InsuSensCalc" package offers a comprehensive suite of functions designed to facilitate the calculation of insulin sensitivity indices based on fasting, oral glucose tolerance test (OGTT), and lipid (adipo) values. It enables easy and accurate assessment of insulin sensitivity, critical for understanding and managing metabolic disorders like diabetes and obesity.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LazyData: true
+Imports:
+    dplyr,
+    tibble,
+    magrittr
+Suggests:
+  knitr,
+  rmarkdown,
+  testthat
+VignetteBuilder: knitr
+Depends:
+    R (>= 3.5.0)
