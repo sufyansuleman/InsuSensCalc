@@ -8,8 +8,8 @@ library(InsuSensCalc)
 # Load your package (replace 'InsulinMetrics' with the name of your package)
 #library(InsulinMetrics)
 
-# Load the example_data using system.file to ensure the path is correctly located within the package
-load("~/R_packages/InsuSensCalc/data/example_data.rda")
+# Load the example_data 
+data(example_data.rda)
 
 
 # Start defining your tests

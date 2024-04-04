@@ -7,36 +7,31 @@
 isi_calculator(data, category = c("fasting", "ogtt", "adipo", "tracer_dxa"))
 }
 \arguments{
-\item{data}{A dataframe containing the required variables for calculation. This includes insulin
-and glucose measurements at fasting (0 min), 30 min, and 120 min post-glucose load, as well as
-triglycerides, HDL cholesterol, and other metabolic parameters as needed.
-Name of the variables in the input data should be the same as the ones listed below in details (or check with ?example_data) for accurately calculating the indices.
-Otherwise it will result in Error.
-If a variable is missing for the category it will not calculate any of the index for that category.
-This can be handled by creating the missing variable column but with simulated, random or "NA" values
-If variable column exist but the values are missing \code{isi_calculator} function will set the value to NA in internal operation and calculate the remaining indices while returning the NA value for indices where the the missing variable was required.}
+\item{data}{A dataframe with variables for calculating indices.
+The variables include measurements of insulin and glucose at fasting (0 minutes), 30 minutes, and 120 minutes after an oral glucose tolerance test, along with triglycerides, HDL cholesterol, and other necessary parameters.
+The variable names in the input dataframe should match those specified in the documentation (see \code{?example_data}) to ensure accurate index calculations. If the names differ, the function will return an error.
+If your dataframe is missing a variable required for a specific index calculation, the function will not compute any indices for that category.
+To address this, you can add a column for the missing variable filled with simulated values or "NA" to allow the calculation of other indices.
+If a variable column exists but contains missing values, the 'isi_calculator()' function will internally set these values to "NA" and proceed to calculate the remaining indices.
+It will return "NA" for any index that required the missing variable.}
 
-\item{category}{A character vector specifying which category of indices
-to calculate. If you have only fasting insulin and glucose values choose
-"fasting" category. If you also have OGTT based values choose "ogtt" category;
-it calculates indices based on these values, if 30 min values are missing
-then it will only calculate the indices based on 0 and 120 min values.
-If you have lipid values like TG, FFA, and HDL-C then choose "adipo" category.
-OGTT and adipo category also use anthropometric values such as age, sex, weight, bmi, and waist.
-If you want to calculate indices for all categories then leave the argument empty or use the a list of category like c("fasting", "ogtt", "adipo", "tracer_dxa").
-c("fasting", "ogtt", "adipo") as input.}
+\item{category}{Specify categories of indices to calculate through a character vector.
+If your data includes only fasting insulin and glucose measurements, use the "fasting" category.
+For calculations involving Oral Glucose Tolerance Test (OGTT) values, select the "ogtt" category; if 30-minute values are absent, the function will compute indices using only the 0 and 120-minute measurements.
+To incorporate lipid measurements such as triglycerides (TG), free fatty acids (FFA), and HDL cholesterol (HDL-C), choose the "adipo" category.
+Both the "ogtt" and "adipo" categories also require anthropometric data, including age, sex, weight, body mass index (BMI), and waist circumference.
+To calculate indices across all categories, either leave the argument empty or specify a list of desired categories, for example, \code{c("fasting", "ogtt", "adipo", "tracer_dxa")}.}
 }
 \value{
-A data frame containing the IS indices calculated for the specified category/ies.
-The values are returned raw without any kind of normalization or transformation.
-For further processing especially the statistical testing and visualization, it is recommended to normalize the values.
-As most of them are on different scales
+This function returns a dataframe with Insulin Sensitivity indices calculated for the chosen categories.
+The output values are raw and have not undergone any normalization or transformation.
+For subsequent analyses, particularly statistical testing and visualization, it's advisable to normalize these values due to their varying scales.
 }
 \description{
 Calculates surrogate insulin sensitivity indices based on fasting, OGTT, and lipid (adipo) values values.
 }
 \details{
-The function requires specific columns in the data for each category:
+It requires specific columns in the data for each category:
 \itemize{
 \item \code{fasting}: \code{"G0", "I0"}
 \item \code{ogtt}: \code{"G0", "I0", "G120", "I120", "G30", "I30", "age", "sex", "bmi", "weight"}
@@ -46,78 +41,88 @@ plus specific tracer and DXA measures: \code{"rate_palmitate", "rate_glycerol", 
 Ensure that the data frame contains these columns when selecting this category for accurate calculation.
 }
 
+It also performs the following unit conversions as part of the calculations:
+\itemize{
+\item Glucose: Converts from mmol/L to mg/dL using the formula \code{value * 18}.
+\item Insulin: Converts from pmol/L to µU/ml using the formula \code{value / 6}.
+\item Triglycerides: Converts from mmol/L to mg/dL using the formula \code{value * 88}.
+\item HDL cholesterol: Converts from mmol/L to mg/dL using the formula \code{value * 38}.
+}
+
+Additionally, for the calculation of Belfiore_inv_FFA, the function converts
+Free Fatty Acids (FFA) values to Area Under Curve (AUC) as part of the preprocessing.
+
 Supported options for \code{category} are "fasting", "ogtt", "adipo", and "tracer_dxa".
 Specific indices calculated for each category are detailed within each category section.
 
-\itemize{
+\describe{
 \item{\strong{fasting}:}{
-\itemize{
-\item{Fasting Insulin Sensitivity: Inversed to represent IS}
-\item{Raynaud Index: an IS index}
-\item{HOMA-IR_inv: Inversed to represent IS}
-\item{FRI: Fasting Insulin Resistance Index: Inversed to represent IS}
-\item{QUICKI: Quantitative Insulin Sensitivity Check Index: IS index}
-\item{Belfiore basal index : IS index}
-\item{Insulin to Glucose Ratio: Inversed to represent IS}
-\item{Insulin Sensitivity Index basal :IS index}
-\item{Bennett Index : IS index}
-\item{HOMA-IR-inv (Revised) : Revised HOMA-IR inversed to represent IS Index}
+Indices based on \strong{fasting} measurements.
+\describe{
+\item{- \strong{Fasting Insulin}: Inversed to represent IS}{}
+\item{- \strong{Raynaud Index}: An IS index}{}
+\item{- \strong{HOMA-IR_inv}: Inversed to represent IS}{}
+\item{- \strong{FIRI}: Fasting Insulin Resistance Index: Inversed to represent IS}{}
+\item{- \strong{QUICKI}: Quantitative Insulin Sensitivity Check Index: IS index}{}
+\item{- \strong{Belfiore basal}:IS index}{}
+\item{- \strong{Insulin to Glucose Ratio}: Inversed to represent IS}{}
+\item{- \strong{Insulin Sensitivity Index basal}: IS index}{}
+\item{- \strong{Bennett Index}: An IS index}{}
+\item{- \strong{HOMA-IR-inv (Revised)}: Revised HOMA-IR, Inversed to represent IS Index}{}
 }
 }
 \item{\strong{ogtt}:}{
-\itemize{
-\item{Insulin Sensitivity Index at 120 min}
-\item{Gutt Index: Insulin sensitivity based on the OGTT}
-\item{Avignon Index at 0 and 120 min: A composite measure considering glucose and insulin levels}
-\item{Matsuda Index based on AUC for glucose and insulin at 0, 30, 120 minutes }
-\item{Isi_120: Insulin Sensitivity Index 120}
-\item{Ig_ratio_120_inv: Insulin to Glucose Ratio at 120 : Inversed to represent IS}
-\item{Gutt_index: Gutt Index : IS index}
-\item{Avignon_Si0: Avignon Index at 0 min}
-\item{Avignon_Si120: Avignon Index at 120 min}
-\item{Avignon_Sim: Avignon Index mean}
-\item{Modified_stumvoll: Modified Stumvoll Index}
-\item{Stumvoll_Demographics: Stumvoll Index with Demographics}
-\item{Glu_Auc_Mean: Mean Glucose AUC}
-\item{Insu_Auc_Mean: Mean Insulin AUC}
-\item{Matsuda_Auc: Matsuda Index}
-\item{BigttSi: BIGTT-Si}
-\item{Ifc_inv: Insulin fold change: Inversed to represent IS}
-\item{HIRI_inv: Hepatic Insulin Resistance Index: Inversed to represent IS}
+Indices based on \strong{OGTT} measurements.
+\describe{
+\item{- \strong{Insulin Sensitivity Index}: IS at 120 min}{}
+\item{- \strong{Cederholm Index}: Insulin sensitivity based on the OGTT}{}
+\item{- \strong{Gutt Index}: Insulin sensitivity based on the OGTT}{}
+\item{- \strong{Matsuda ISI AUC }: Based on AUC for glucose and insulin at 0, 30, 120 minutes}{}
+\item{- \strong{Matsuda ISI}: Based on row means for glucose and insulin at 0, 30, 120 minutes}{}
+\item{- \strong{IG_ratio_120_inv}: Insulin to Glucose Ratio at 120: Inversed to represent IS}{}
+\item{- \strong{Avignon_Si0}: Avignon Index at 0 min}{}
+\item{- \strong{Avignon_Si120}: Avignon Index at 120 min}{}
+\item{- \strong{Avignon_Sim}: Avignon Index mean of the two avignon indices}{}
+\item{- \strong{Modified_stumvoll}: Modified Stumvoll Index}{}
+\item{- \strong{Stumvoll_Demographics}: Stumvoll Index with Demographics, age and bmi }{}
+\item{- \strong{Glu_Auc_Mean}: Mean Glucose AUC, not really intermediate product}{}
+\item{- \strong{Insu_Auc_Mean}: Mean Insulin AUC, not really intermediate product}{}
+\item{- \strong{BigttSI}:An IS index}{}
+\item{- \strong{Ifc_inv}: Insulin fold change, Inversed to represent IS}{}
+\item{- \strong{HIRI_inv}: Hepatic Insulin Resistance Index: Inversed to represent IS}{}
+\item{- \strong{Belfiore_ISI_gly}:IS index based on OGTT}{}
 }
 }
 \item{\strong{adipo}:}{
-\itemize{
-\item{Revised_QUICKI: Revised QUICK Index}
-\item{VAI_Men_inv: Visceral Adiposity Index for Men: Inversed to represent IS}
-\item{VAI_Women_inv: Visceral Adiposity Index for Women : Inversed to represent IS}
-\item{TG_HDL_C_inv: TG to HDL-C ratio converted to IS :Inversed to represent IS}
-\item{TyG_inv: TyG Index converted to IS : Inversed to represent IS}
-\item{LAP_Men_inv: Lipid Accumulation Product for Men : Inversed to represent IS}
-\item{LAP_Women_inv: Lipid Accumulation Product for Women : Inversed to represent IS}
-\item{McAuley_index: McAuley Index}
-\item{LIRI_inv: Liver Insulin Resistance Index converted to IS : Inversed to represent IS}
-\item{Adipo_inv: Adipose Insulin Resistance Index converted to IS : Inversed to represent IS}
-\item{Lipo_inv: Lipolysis Index converted to IS : Inversed to represent IS}
-\item{ATIRI_inv: Adipose Tissue Insulin Resistance Index converted to IS : Inversed to represent IS}
-\item{Belfiore_inv_FFA: Belfiore Index for FFA converted to IS : Inversed to represent IS}
+Indices based on \strong{adipose} tissue measurements.
+\describe{
+\item{- \strong{Revised_QUICKI}: Revised QUICK Index}{}
+\item{- \strong{VAI_Men_inv}: Visceral Adiposity Index for Men: Inversed to represent IS}{}
+\item{- \strong{VAI_Women_inv}: Visceral Adiposity Index for Women: Inversed to represent IS}{}
+\item{- \strong{TG_HDL_C_inv}: TG to HDL-C ratio: Inversed to represent IS}{}
+\item{- \strong{TyG_inv}: Triglyceride based Index: Inversed to represent IS}{}
+\item{- \strong{LAP_Men_inv}: Lipid Accumulation Product for Men: Inversed to represent IS}{}
+\item{- \strong{LAP_Women_inv}: Lipid Accumulation Product for Women: Inversed to represent IS}{}
+\item{- \strong{McAuley_index}: McAuley Index}{}
+\item{- \strong{Adipo_inv}: Adipose Insulin Resistance Index: Inversed to represent IS}{}
+\item{- \strong{Belfiore_inv_FFA}: Belfiore Index with FFA: Inversed to represent IS}{}
 }
 }
 \item{\strong{tracer_dxa}:}{
-\itemize{
-\item{LIRI_inv: Liver Insulin Resistance Index converted to IS : Inversed to represent IS}
-\item{Lipo_inv: Lipolysis Index converted to IS : Inversed to represent IS}
-\item{ATIRI_inv: Adipose Tissue Insulin Resistance Index converted to IS : Inversed to represent IS}
+Special indices involving \strong{tracer and DXA} measurements.
+\describe{
+\item{- \strong{LIRI_inv}: Liver Insulin Resistance Index: Inversed to represent IS}{}
+\item{- \strong{Lipo_inv}: Lipolysis Index: Inversed to represent IS}{}
+\item{- \strong{ATIRI_inv}: Adipose Tissue Insulin Resistance Index: Inversed to represent IS}{}
 }
 }
 }
-
 The calculation of most indices follows established formulas documented in the references, with units and other details conforming to the standards set forth in the literature. Although not all original references are explicitly provided, they were consulted individually for each index calculation.
 
 References:
 \itemize{
-\item Amalia Gastaldelli (2022). (PubMed: \url{https://onlinelibrary.wiley.com/doi/10.1002/oby.23503})
-\item Carlos Lorenzo (2010). (PubMed: \url{https://academic.oup.com/jcem/article/95/11/5082/2835314})
+\item Gastaldelli (2022). <doi.org/10.1002/oby.23503>
+\item Lorenzo (2010). <doi.org/10.1210/jc.2010-1144>
 }
 }
 \examples{

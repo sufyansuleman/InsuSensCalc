@@ -6,7 +6,7 @@
 #' If a variable is missing for the category it will not calculate the any of the index for that category.
 #' This can be handeld by creating the variable column with NA vlaues
 #' If the values are missing for a variable it will set the value to NA and calculate the remaining indices and return the NA value for the missing variable.  
-#' @format A data frame with 3 rows (number of observations) and 17 columns (variables, can vary for every data):
+#' @format A data frame with rows (number of observations) and 17 columns (variables, can vary for every data):
 #' \describe{
 #'   \item{age}{numeric Age of the individual (years)}
 #'   \item{sex}{factor Sex of the individual (1 for male, 2/0 for female)}

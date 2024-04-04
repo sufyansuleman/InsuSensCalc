@@ -1,5 +1,7 @@
 ---
-title: "introduction"
+title: "Insulin Sensitivity Indices Calculator"
+author: "Sufyan Suleman"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{introduction}
@@ -14,30 +16,72 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+
+# Insulin Sensitivity Indices Calculator
+
+The 'isi_calculator' function is a comprehensive tool designed to calculate a wide array of surrogate insulin sensitivity indices. This vignette provides a detailed guide on installing the package, understanding its usage, and interpreting the output effectively.
+
+## Installation
+
+Before using 'isi_calculator'function from the 'InsuSensCalc' package, ensure that the necessary dependencies are installed and loaded into your R session for example: dplyr, magrittr and tibble.
+
+
+Additionally, you need to install the 'InsuSensCalc' package itself. If It is available on CRAN, install it using:
+
+install.packages("InsuSensCalc")
+
+
+Or, if it's not on CRAN, you can install it directly from its repository, for example, GitHub:
+using devtools::install_github("sufyansuleman/InsuSensCalc")
+
+
+## Usage
+
+The 'isi_calculator' function is designed to be flexible, accommodating various types of input data related to insulin sensitivity calculations:
+
+- **Fasting:** Requires fasting glucose and insulin levels.
+- **OGTT:** Requires glucose and insulin levels at multiple time points post-glucose load (e.g., 30 and 120 minutes).
+- **Adipose Tissue (adipo):** Requires measurements related to adipose tissue, such as triglycerides and HDL cholesterol.
+- **Tracer and DXA (tracer_dxa):** Includes specialized indices involving tracer measurements and dual-energy X-ray absorptiometry (DXA).
+
+### Preparing Your Data
+
+Your input dataframe should include columns corresponding to the required measurements for your chosen calculation categories. The column names should match the expected names exactly.
+
+### Function Parameters
+
+- `data`: The input dataframe.
+- `category`: A character vector specifying which indices to calculate. Available options: `"fasting"`, `"ogtt"`, `"adipo"`, and `"tracer_dxa"`.
+
+### Advanced Details
+
+The function includes automatic unit conversions for relevant variables and handles missing data gracefully, either skipping calculations for missing variables or setting indices to NA when applicable.
+
+### Example Usage
+
+```{r example-usage}
+# Load the package
 library(InsuSensCalc)
+
+# Load your data
+# example_data <- read.csv("path/to/your/data.csv")
+
+# Sample usage of the function
+result_fasting <- isi_calculator(example_data, category = "fasting")
+result_ogtt <- isi_calculator(example_data, category = "ogtt")
+result_adipo <- isi_calculator(example_data, category = "adipo")
+result_combined <- isi_calculator(example_data, category = c("fasting", "ogtt", "adipo", "tracer_dxa"))
+
+# Print a result to view
+print(result_fasting)
 ```
 
-**isi_calculator Package Overview**
+## Output Interpretation
 
-The isi_calculator package is a robust tool for metabolic research and clinical settings, designed to calculate various insulin sensitivity indices accurately. It facilitates the assessment of insulin sensitivity from diverse metabolic data, including fasting samples, oral glucose tolerance tests (OGTT), and lipid parameters. The package uniquely converts insulin resistance (IR) indices to insulin sensitivity (IS) metrics, providing a unified scale for interpretation across different studies.
+The output of 'isi_calculator' is a dataframe containing the calculated indices for each specified category. These values are provided without normalization or transformation. It is advisable to normalize these values according to your analysis needs, especially when planning to conduct statistical testing or visualization.
 
-Adaptable to specific research or clinical needs, isi_calculator supports a wide array of insulin sensitivity calculations, automating and ensuring accuracy and reproducibility. It spans well-known to advanced indices like HOMA-IR, Matsuda Index, and Visceral Adiposity Index. The isi_calculator package advances metabolic health research and personalized medicine by offering an efficient, precise tool for insulin sensitivity analysis.
+## Conclusion
 
-Key features include:
-
-**Versatile Data Handling:** It accepts a wide range of metabolic data inputs and performs unit conversions necessary for accurate index calculation.
-for example,
-
-the conversion of gluccose from mmol/L to mg/dL.
-the conversion of insulin from pmol/L to µU/ml.
-the conversion of triglycerides from mmol/L to mg/dL.
-the conversion of HDL cholesterol from mmol/L to mg/dL.
-the conversion of FFA to AUC for Belfiore_inv_FFA calcualtion
+The 'InsuSensCalc' package and its 'isi_calculator' function offer a robust solution for calculating insulin sensitivity indices from a variety of data types. By following the guidelines in this vignette, you can effectively utilize this tool for your research or clinical assessments related to insulin sensitivity and metabolic health.
 
 
-**Customizable Index Selection:** Users can choose specific categories of indices to calculate, such as fasting, OGTT, or adipose tissue-based indices, or a combination of all.
-**Automated Index Calculation:** The package automates the calculation of various insulin sensitivity indices, eliminating the need for manual computation.
-
-**Comprehensive Index Calculation:** Beyond traditional fasting glucose and insulin levels, it integrates data from OGTT and adipose tissue measurements to compute a broad spectrum of insulin sensitivity indices.
-**Inverts IR to IS Indices:** Converts insulin resistance metrics to insulin sensitivity measures, facilitating easier interpretation.

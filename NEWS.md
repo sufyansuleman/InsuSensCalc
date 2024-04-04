@@ -25,7 +25,7 @@
   - Lipid Accumulation Product (LAP)
   - ATIRI_inv
   
-  - Utilizes **tracer and dxa based data** measurements like rate of glycerol, palmitate and dxa based fat mass for indices such as:
+- Utilizes **tracer and dxa based data** measurements like rate of glycerol, palmitate and dxa based fat mass for indices such as:
   - LIRI_inv
   - Lipo_inv
   - TyG Index (inversed)

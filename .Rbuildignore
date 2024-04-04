@@ -2,3 +2,14 @@
 ^renv\.lock$
 ^InsuSensCalc\.Rproj$
 ^\.Rproj\.user$
+^docs$
+^\.Rhistory$
+^LICENSE\.md$
+^\.lastMiKTeXException$
+^\.NULL$
+^\.gitignore$
+^lastMiKTeXException$
+^NULL$
+\.tmp$
+^temp\.txt$
+^temp_files/

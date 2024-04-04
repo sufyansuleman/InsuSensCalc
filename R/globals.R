@@ -5,4 +5,4 @@ utils::globalVariables(c("I0", "G0", "I0_microU_ml", "G0_mg_dl", "I30", "G30",
                          "I30_microU_ml", "Glu_Auc_Mean", "Insu_Auc_Mean", "sex", 
                          "TG", "HDL_c", "FFA", "fat_mass", "rate_glycerol", 
                          "rate_palmitate", "waist", "TG_mg_dl", "HDL_c_mg_dl", 
-                         "FM_kg", "Ra_glycerol", "Ra_palmitate", "I_AUC", "FFA_AUC"))
+                         "FM_kg", "Ra_glycerol", "Ra_palmitate", "I_AUC", "FFA_AUC", "G_AUC", "G_mean", "I_mean"))
