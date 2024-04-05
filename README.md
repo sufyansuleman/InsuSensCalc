@@ -49,7 +49,7 @@ devtools::install_github("username/InsuSensCalc")
 
 The `isi_calculator` function computes various insulin sensitivity (IS) indices across different data categories.
 
-## Categories and Indices
+### Categories and Indices
 
 
 - **Fasting** (fasting)
