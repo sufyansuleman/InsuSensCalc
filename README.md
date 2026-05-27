@@ -1,5 +1,13 @@
 # InsuSensCalc
 
+<!-- badges: start -->
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/InsuSensCalc)](https://cran.r-project.org/package=InsuSensCalc)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/InsuSensCalc)](https://cran.r-project.org/package=InsuSensCalc)
+[![GitHub release downloads](https://img.shields.io/github/downloads/sufyansuleman/InsuSensCalc/total.svg)](https://github.com/sufyansuleman/InsuSensCalc/releases)
+[![R-CMD-check](https://github.com/sufyansuleman/InsuSensCalc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sufyansuleman/InsuSensCalc/actions/workflows/R-CMD-check.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<!-- badges: end -->
+
 ## Introduction
 
 The `isi_calculator` from the InsuSensCalc package is designed to compute surrogate insulin sensitivity indices across various categories: fasting measures, oral glucose tolerance tests (OGTT), adipose tissue metrics, and tracer and DXA assessments. This guide covers from setup and data preparation to execution and output interpretation. 
