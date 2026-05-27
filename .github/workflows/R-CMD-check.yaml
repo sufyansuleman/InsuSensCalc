@@ -21,6 +21,7 @@ jobs:
         run: |
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")'
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); remotes::install_deps(dependencies = TRUE)'
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown"); if (!requireNamespace("testthat", quietly = TRUE)) install.packages("testthat"); if (!requireNamespace("knitr", quietly = TRUE)) install.packages("knitr")'
 
       - name: Run R CMD check
         run: R CMD check --no-manual --as-cran .
