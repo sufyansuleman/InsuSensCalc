@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      R_LIBS_USER: ${{ runner.temp }}/Rlibs
 
     steps:
       - name: Checkout repository
@@ -21,9 +23,9 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")'
-          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); remotes::install_deps(dependencies = TRUE)'
-          Rscript --vanilla -e 'install.packages(c("knitr", "rmarkdown"), repos = "https://cloud.r-project.org")'
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE, showWarnings = FALSE); if (!requireNamespace("remotes", quietly = TRUE, lib.loc = Sys.getenv("R_LIBS_USER"))) install.packages("remotes", lib = Sys.getenv("R_LIBS_USER"))'
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); remotes::install_deps(dependencies = TRUE, lib = Sys.getenv("R_LIBS_USER"))'
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); install.packages(c("knitr", "rmarkdown"), lib = Sys.getenv("R_LIBS_USER"))'
 
       - name: Build package tarball
         run: R CMD build .
