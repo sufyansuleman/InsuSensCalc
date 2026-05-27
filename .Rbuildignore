@@ -16,4 +16,9 @@
 ^\.github$
 ^\.git$
 ^\.Rcheck$
+^\.\.Rcheck$
+^InsuSensCalc_.*\.tar\.gz$
+^commit_msg.*\.txt$
+^commit_remove_msg.*\.txt$
+^run_rcmd_check\.bat$
 ^\.Rprofile$
