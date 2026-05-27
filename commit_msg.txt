@@ -1,0 +1,1 @@
+CI: use --vanilla for Rscript and guard .Rprofile  
