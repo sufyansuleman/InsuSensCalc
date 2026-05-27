@@ -1,6 +1,10 @@
-.Rproj.user
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
 renv/
 ..Rcheck/
+.Rcheck/
+*.tar.gz
+.Rproj
+.Rplots.pdf

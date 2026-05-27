@@ -1,0 +1,10 @@
+citHeader("To cite package InsuSensCalc in publications:")
+
+citEntry(
+  entry = "Article",
+  title = "InsuSensCalc: Insulin Sensitivity Indices Calculator",
+  author = person("Sufyan", "Suleman"),
+  year = "2026",
+  journal = "R package documentation",
+  note = "Package developed to support the study available at PubMed PMID 38635292. Please cite this package and the associated study when using InsuSensCalc in your research."
+)

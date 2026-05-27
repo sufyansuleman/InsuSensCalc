@@ -1,43 +1,32 @@
 # File: test-isi_calculator.R
 
-# Load necessary libraries
 library(testthat)
-library(dplyr)  # If you're using dplyr functions like mutate, select, etc.
 library(InsuSensCalc)
 
-# Load your package (replace 'InsulinMetrics' with the name of your package)
-#library(InsulinMetrics)
-
-# Load the example_data 
-data(example_data.rda)
-
+data(example_data)
 
 # Start defining your tests
-test_that("isi_calculator function works correctly", {
-  # Example test cases
-  
-  # Test 1: Ensure function works with a dataframe input
-  data <- data.frame(example_data)  
-  result <- isi_calculator(data)
-  expect_true(is.data.frame(result), "Result should be a dataframe")
-  
-  # Test 2: Test specific output for fasting category
-  data <- data.frame(example_data)  
-  result <- isi_calculator(data, category = "fasting")
- 
-  
-  # Test 3: Test specific output for ogtt category
-  data <- data.frame(example_data)  
-  result <- isi_calculator(data, category = "ogtt")
 
-  
-  # Test 4: Test specific output for adipo category
-  data <- data.frame(example_data)  
-  result <- isi_calculator(data, category = "adipo")
- 
-  
-  # Test 4: Test specific output for tracer_dxa category
-  data <- data.frame(example_data)  
-  result <- isi_calculator(data, category = "tracer_dxa")
-  
+test_that("isi_calculator returns a dataframe for default categories", {
+  result <- isi_calculator(example_data)
+  expect_true(is.data.frame(result))
+  expect_gt(nrow(result), 0)
+})
+
+test_that("fasting category produces expected fasting index columns", {
+  result <- isi_calculator(example_data, category = "fasting")
+  expect_true(all(c("Fasting_inv", "Homa_IR_inv", "Quicki", "Isi_basal") %in% names(result)))
+})
+
+test_that("ogtt category produces expected OGTT index columns", {
+  result <- isi_calculator(example_data, category = "ogtt")
+  expect_true(all(c("Isi_120", "Gutt_index", "Matsuda_ISI", "Belfiore_isi_gly") %in% names(result)))
+})
+
+test_that("adipo and tracer_dxa categories produce adipose and tracer indices", {
+  result_adipo <- isi_calculator(example_data, category = "adipo")
+  expect_true(all(c("Revised_QUICKI", "TyG_inv", "McAuley_index") %in% names(result_adipo)))
+
+  result_tracer <- isi_calculator(example_data, category = "tracer_dxa")
+  expect_true(all(c("LIRI_inv", "Lipo_inv", "ATIRI_inv") %in% names(result_tracer)))
 })

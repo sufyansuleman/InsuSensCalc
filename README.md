@@ -16,6 +16,15 @@
 
 This package was developed as part of the study available at https://pubmed.ncbi.nlm.nih.gov/38635292/. The package was used to support the analyses reported in that work, and it is intended for researchers who need a consistent, easy-to-use calculator for insulin sensitivity indices.
 
+## Key features
+
+- Calculates validated insulin sensitivity indices from fasting, OGTT, adipose, tracer, and DXA inputs.
+- Allows category-specific or full multi-category calculation in a single call.
+- Uses standard clinical and research variable names to support reproducible workflows.
+- Includes a citation section so users can properly acknowledge the package and underlying study.
+
+> Note: This README is the package landing page. No additional pkgdown website is included at this time.
+
 ## Setup
 
 ### Prerequisites
@@ -175,6 +184,12 @@ If you use `InsuSensCalc` in your research, please cite the study that motivated
 Suggested citation language:
 
 > Suleman S, et al. InsuSensCalc package for insulin sensitivity index calculation. Study available at PubMed PMID 38635292. Please cite the package and the underlying study when using it in your research.
+
+You can also use the built-in citation helper from R:
+
+```r
+citation("InsuSensCalc")
+```
 
 ## Interpreting the Output
 

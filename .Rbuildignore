@@ -12,4 +12,6 @@
 ^NULL$
 \.tmp$
 ^temp\.txt$
-^temp_files/
+^temp_files/^\.github$
+^\.git$
+^\.Rcheck$
