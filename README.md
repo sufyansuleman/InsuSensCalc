@@ -10,7 +10,11 @@
 
 ## Introduction
 
-The `isi_calculator` from the InsuSensCalc package is designed to compute surrogate insulin sensitivity indices across various categories: fasting measures, oral glucose tolerance tests (OGTT), adipose tissue metrics, and tracer and DXA assessments. This guide covers from setup and data preparation to execution and output interpretation. 
+`InsuSensCalc` is an R package for computing insulin sensitivity indices from fasting, OGTT, adipose tissue, tracer, and DXA data. It provides a single, reproducible workflow to calculate multiple established insulin sensitivity measures used in metabolic research.
+
+## About this package
+
+This package was developed as part of the study available at https://pubmed.ncbi.nlm.nih.gov/38635292/. The package was used to support the analyses reported in that work, and it is intended for researchers who need a consistent, easy-to-use calculator for insulin sensitivity indices.
 
 ## Setup
 
@@ -35,10 +39,10 @@ Install from CRAN or GitHub:
 install.packages("InsuSensCalc")
 ```
 
-Or directly from a repository:
+Or directly from GitHub:
 
 ```{r install-github}
-devtools::install_github("username/InsuSensCalc")
+remotes::install_github("sufyansuleman/InsuSensCalc")
 ```
 
 ## Understanding the `isi_calculator` Function
@@ -53,7 +57,7 @@ devtools::install_github("username/InsuSensCalc")
 - `category`: Indices categories to calculate. Options: `"fasting"`, `"ogtt"`, `"adipo"`, `"tracer_dxa"`.
 
 
-## What it calcualtes
+## What it calculates
 
 The `isi_calculator` function computes various insulin sensitivity (IS) indices across different data categories.
 
@@ -145,7 +149,7 @@ Structure your data with the following columns and units:
 - `rate_palmitate`, `rate_glycerol`: Tracer rates (arbitrary units)
 - `fat_mass`: Fat mass (kg)
 
-Column names are case sensitiivty and must match exactly.
+Column names are case sensitive and must match exactly.
 
 ## Example Usage
 
@@ -157,16 +161,25 @@ Calculate indices with your formatted data:
 result <- isi_calculator(your_data, "fasting")
 result <- isi_calculator(your_data, "ogtt")
 result <- isi_calculator(your_data, category = c("fasting", "ogtt"))
-OR
 
 result <- isi_calculator(your_data, category = c("fasting", "ogtt", "adipo", "tracer_dxa"))
 print(result)
 ```
 
+## Citation
+
+If you use `InsuSensCalc` in your research, please cite the study that motivated this package and mention the package in your methods section. This package was developed from and used in the published study:
+
+- PubMed: https://pubmed.ncbi.nlm.nih.gov/38635292/
+
+Suggested citation language:
+
+> Suleman S, et al. InsuSensCalc package for insulin sensitivity index calculation. Study available at PubMed PMID 38635292. Please cite the package and the underlying study when using it in your research.
+
 ## Interpreting the Output
 
-The resulting dataframe lists calculated indices. Missing data points will not have the corresponding index value.Output columns are raw non standardized values of the indices that may require normalization or standardaization prior to any statistiical analysis or visalization.
+The resulting dataframe lists calculated indices. Missing data points will not have the corresponding index value. Output columns are raw, non-standardized values of the indices that may require normalization or standardization prior to any statistical analysis or visualization.
 
 ## Conclusion
 
-The InsuSensCalc package's `isi_calculator` function offers a detailed methodology for insulin sensitivity analysis, supporting a range of data types for metabolic health research. The package will updated with new indices and features in the future.
+The InsuSensCalc package's `isi_calculator` function offers a detailed methodology for insulin sensitivity analysis, supporting a range of data types for metabolic health research. Please cite this package and the associated study when using InsuSensCalc in your publications. The package will be updated with new indices and features in the future.
