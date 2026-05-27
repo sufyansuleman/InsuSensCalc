@@ -23,6 +23,7 @@ jobs:
         run: |
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")'
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); remotes::install_deps(dependencies = FALSE)'
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("knitr", quietly = TRUE)) install.packages("knitr"); if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown")'
 
       - name: Build package tarball
         run: R CMD build .
