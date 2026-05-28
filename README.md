@@ -7,6 +7,32 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
+## Overview
+
+InsuSensCalc provides reproducible calculators for a wide range of insulin sensitivity indices derived from common clinical and research measurements (fasting, OGTT, adipose tissue, tracer studies and DXA). It is designed to be:
+
+- **Reliable**: implements validated formulas used in published research.
+- **Lightweight**: minimal dependencies and straightforward installation.
+- **Reproducible**: consistent naming and outputs so results can be compared across studies.
+
+## Who should use this package?
+
+- Clinical and translational researchers working with metabolic or endocrine data.
+- Data analysts processing OGTT, fasting, tracer or DXA datasets.
+- Anyone needing standardised insulin sensitivity index calculations in R.
+
+## Quick start
+
+Install from CRAN or GitHub and run a quick example:
+
+```r
+install.packages("InsuSensCalc") # or remotes::install_github("sufyansuleman/InsuSensCalc")
+library(InsuSensCalc)
+data(example_data)
+res <- isi_calculator(example_data, category = c("fasting", "ogtt"))
+head(res)
+```
+
 ## Introduction
 
 `InsuSensCalc` is an R package for computing insulin sensitivity indices from fasting, OGTT, adipose tissue, tracer, and DXA data. It provides a single, reproducible workflow to calculate multiple established insulin sensitivity measures used in metabolic research.
