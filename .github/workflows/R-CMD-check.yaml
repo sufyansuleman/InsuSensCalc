@@ -31,4 +31,11 @@ jobs:
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); install.packages(c("rmarkdown","testthat","knitr"), lib = Sys.getenv("R_LIBS_USER"))'
 
       - name: Run R CMD check
-        run: R CMD check --no-manual --as-cran .
+        run: |
+          # Ensure the per-run R library is used by the check
+          export R_LIBS_USER="$RUNNER_TEMP/Rlibs"
+          export R_LIBS="$R_LIBS_USER:$R_LIBS"
+          Rscript --vanilla -e 'cat("R_LIBS_USER=", Sys.getenv("R_LIBS_USER"), "\n"); cat("libPaths:", paste(.libPaths(), collapse = ";"), "\n")'
+          # Make extra sure testthat/rmarkdown are available to the check
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("testthat", quietly = TRUE)) install.packages("testthat", lib = Sys.getenv("R_LIBS_USER")); if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", lib = Sys.getenv("R_LIBS_USER"))'
+          R CMD check --no-manual --as-cran .
