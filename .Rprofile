@@ -1,5 +1,4 @@
-if (file.exists("renv/activate.R")) {
+## Only activate renv for interactive sessions (avoid noisy messages in CI)
+if (interactive() && file.exists("renv/activate.R")) {
   source("renv/activate.R")
-} else {
-  message("renv activation file not found; continuing without renv.")
 }
