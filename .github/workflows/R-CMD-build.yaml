@@ -24,6 +24,11 @@ jobs:
           echo "R_LIBS_USER=$RUNNER_TEMP/Rlibs" >> $GITHUB_ENV
           mkdir -p "$RUNNER_TEMP/Rlibs"
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libuv1-dev libxml2-dev libssl-dev libcurl4-openssl-dev
+
       - name: Install build dependencies
         run: |
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("remotes", quietly = TRUE, lib.loc = Sys.getenv("R_LIBS_USER"))) install.packages("remotes", lib = Sys.getenv("R_LIBS_USER"))'
