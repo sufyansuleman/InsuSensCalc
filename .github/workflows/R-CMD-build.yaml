@@ -31,7 +31,13 @@ jobs:
           Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); install.packages(c("knitr", "rmarkdown"), lib = Sys.getenv("R_LIBS_USER"))'
 
       - name: Build package tarball
-        run: R CMD build .
+        run: |
+          # ensure the per-run library is used during build (vignettes need rmarkdown)
+          export R_LIBS_USER="$RUNNER_TEMP/Rlibs"
+          export R_LIBS="$R_LIBS_USER:$R_LIBS"
+          Rscript --vanilla -e 'cat("R_LIBS_USER=", Sys.getenv("R_LIBS_USER"), "\n"); cat("libPaths:", paste(.libPaths(), collapse = ";"), "\n")'
+          Rscript --vanilla -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); if (!requireNamespace("rmarkdown", quietly = TRUE, lib.loc = Sys.getenv("R_LIBS_USER"))) install.packages("rmarkdown", lib = Sys.getenv("R_LIBS_USER"))'
+          R CMD build .
 
       - name: Upload source package artifact
         uses: actions/upload-artifact@v4
