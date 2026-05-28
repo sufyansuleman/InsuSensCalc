@@ -27,7 +27,10 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libuv1-dev libxml2-dev libssl-dev libcurl4-openssl-dev pandoc pandoc-citeproc
+          sudo apt-get install -y libuv1-dev libxml2-dev libssl-dev libcurl4-openssl-dev
+
+      - name: Setup Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
 
       - name: Install build dependencies
         run: |
