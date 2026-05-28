@@ -27,7 +27,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libuv1-dev libxml2-dev libssl-dev libcurl4-openssl-dev
+          sudo apt-get install -y libuv1-dev libxml2-dev libssl-dev libcurl4-openssl-dev pandoc pandoc-citeproc
 
       - name: Install build dependencies
         run: |
