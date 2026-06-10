@@ -22,3 +22,4 @@
 ^commit_remove_msg.*\.txt$
 ^run_rcmd_check\.bat$
 ^\.Rprofile$
+^cran-comments\.md$

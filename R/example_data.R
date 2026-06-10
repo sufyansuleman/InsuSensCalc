@@ -4,7 +4,7 @@
 #' Name of the variables in the input data should be the same as the ones listed below for accurately calculating the indices.
 #' Otherwise it will result in Error.
 #' If a variable is missing for the category it will not calculate the any of the index for that category.
-#' This can be handeld by creating the variable column with NA vlaues
+#' This can be handled by creating the variable column with NA values
 #' If the values are missing for a variable it will set the value to NA and calculate the remaining indices and return the NA value for the missing variable.  
 #' @format A data frame with rows (number of observations) and 17 columns (variables, can vary for every data):
 #' \describe{

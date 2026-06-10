@@ -44,7 +44,7 @@ Ensure that the data frame contains these columns when selecting this category f
 It also performs the following unit conversions as part of the calculations:
 \itemize{
 \item Glucose: Converts from mmol/L to mg/dL using the formula \code{value * 18}.
-\item Insulin: Converts from pmol/L to µU/ml using the formula \code{value / 6}.
+\item Insulin: Converts from pmol/L to microU/ml using the formula \code{value / 6}.
 \item Triglycerides: Converts from mmol/L to mg/dL using the formula \code{value * 88.57}.
 \item HDL cholesterol: Converts from mmol/L to mg/dL using the formula \code{value * 38.67}.
 }
@@ -141,4 +141,3 @@ print(result)
 # use ?example_data to see the sample data column names and description
 
 }
-\keyword{internal}

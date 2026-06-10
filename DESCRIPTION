@@ -1,12 +1,18 @@
 Package: InsuSensCalc
 Title: Insulin Sensitivity Indices Calculator
 Version: 0.1.0
-Author: Sufyan Suleman <sufyansuleman@hotmail.com>
 Authors@R: person("Sufyan", "Suleman", email = "sufyansuleman@hotmail.com", role = c("aut", "cre"))
-Maintainer: Sufyan Suleman <sufyansuleman@hotmail.com>
-Description: It facilitates the calculation of 40 different insulin sensitivity indices based on fasting, oral glucose tolerance test (OGTT), lipid (adipose), and tracer (palmitate and glycerol rate) and dxa (fat mass) measurement values. It enables easy and accurate assessment of insulin sensitivity, critical for understanding and managing metabolic disorders like diabetes and obesity. Indices calculated are described in Gastaldelli (2022). <doi:10.1002/oby.23503> and Lorenzo (2010). <doi:10.1210/jc.2010-1144>.
+Description: Facilitates the calculation of 40 different insulin sensitivity
+    indices based on fasting, oral glucose tolerance test (OGTT), lipid
+    (adipose), tracer (palmitate and glycerol rate), and DXA (fat mass)
+    measurement values. Enables easy and accurate assessment of insulin
+    sensitivity, critical for understanding and managing metabolic disorders
+    like diabetes and obesity. Indices calculated are described in
+    Gastaldelli (2022) <doi:10.1002/oby.23503> and
+    Lorenzo (2010) <doi:10.1210/jc.2010-1144>.
 License: MIT + file LICENSE
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 LazyData: true

@@ -23,7 +23,7 @@ The 'isi_calculator' function is a comprehensive tool designed to calculate a wi
 
 ## Installation
 
-Before using 'isi_calculator'function from the 'InsuSensCalc' package, ensure that the necessary dependencies are installed and loaded into your R session for example: dplyr, magrittr and tibble.
+Before using the 'isi_calculator' function from the 'InsuSensCalc' package, ensure that the necessary dependencies are installed and loaded into your R session, for example: dplyr, magrittr and tibble.
 
 
 Additionally, you need to install the 'InsuSensCalc' package itself. If It is available on CRAN, install it using:

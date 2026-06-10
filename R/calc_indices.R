@@ -34,7 +34,7 @@
 #'   
 #' It also performs the following unit conversions as part of the calculations:
 #' - Glucose: Converts from mmol/L to mg/dL using the formula `value * 18`.
-#' - Insulin: Converts from pmol/L to µU/ml using the formula `value / 6`.
+#' - Insulin: Converts from pmol/L to microU/ml using the formula `value / 6`.
 #' - Triglycerides: Converts from mmol/L to mg/dL using the formula `value * 88.57`.
 #' - HDL cholesterol: Converts from mmol/L to mg/dL using the formula `value * 38.67`.
 #' 
@@ -114,9 +114,6 @@
 #'   \item Lorenzo (2010). <doi.org/10.1210/jc.2010-1144>
 #' }
 
-#' @keywords internal
-
-
 #' @return This function returns a dataframe with Insulin Sensitivity indices calculated for the chosen categories.
 #' The output values are raw and have not undergone any normalization or transformation.
 #' For subsequent analyses, particularly statistical testing and visualization, it's advisable to normalize these values due to their varying scales.
@@ -139,9 +136,7 @@
 #' # View the results
 #' print(result)
 #' # use ?example_data to see the sample data column names and description
-#' 
-#' @keywords internal
-#' 
+#'
 #' @export
 isi_calculator <- function(data, category = c("fasting", "ogtt", "adipo", "tracer_dxa")) {
   # Ensure 'data' is a dataframe
