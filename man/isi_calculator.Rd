@@ -45,8 +45,8 @@ It also performs the following unit conversions as part of the calculations:
 \itemize{
 \item Glucose: Converts from mmol/L to mg/dL using the formula \code{value * 18}.
 \item Insulin: Converts from pmol/L to µU/ml using the formula \code{value / 6}.
-\item Triglycerides: Converts from mmol/L to mg/dL using the formula \code{value * 88}.
-\item HDL cholesterol: Converts from mmol/L to mg/dL using the formula \code{value * 38}.
+\item Triglycerides: Converts from mmol/L to mg/dL using the formula \code{value * 88.57}.
+\item HDL cholesterol: Converts from mmol/L to mg/dL using the formula \code{value * 38.67}.
 }
 
 Additionally, for the calculation of Belfiore_inv_FFA, the function converts
@@ -68,7 +68,7 @@ Indices based on \strong{fasting} measurements.
 \item{- \strong{Insulin to Glucose Ratio}: Inversed to represent IS}{}
 \item{- \strong{Insulin Sensitivity Index basal}: IS index}{}
 \item{- \strong{Bennett Index}: An IS index}{}
-\item{- \strong{HOMA-IR-inv (Revised)}: Revised HOMA-IR, Inversed to represent IS Index}{}
+\item{- \strong{HOMA-IR-inv (Revised)}: Standard HOMA-IR via the mg/dL/405 form; numerically equals HOMA-IR_inv}{}
 }
 }
 \item{\strong{ogtt}:}{

@@ -1,9 +1,6 @@
 
-# Load necessary libraries
-library(dplyr)
-library(magrittr)
-library(tibble) # Make sure to load the tibble package
-library(tidyr)
+# Package imports are declared via roxygen @import tags and resolved through
+# NAMESPACE (dplyr, magrittr, tibble); no library() calls needed at load time.
 
 
 
@@ -38,8 +35,8 @@ library(tidyr)
 #' It also performs the following unit conversions as part of the calculations:
 #' - Glucose: Converts from mmol/L to mg/dL using the formula `value * 18`.
 #' - Insulin: Converts from pmol/L to µU/ml using the formula `value / 6`.
-#' - Triglycerides: Converts from mmol/L to mg/dL using the formula `value * 88`.
-#' - HDL cholesterol: Converts from mmol/L to mg/dL using the formula `value * 38`.
+#' - Triglycerides: Converts from mmol/L to mg/dL using the formula `value * 88.57`.
+#' - HDL cholesterol: Converts from mmol/L to mg/dL using the formula `value * 38.67`.
 #' 
 #' Additionally, for the calculation of Belfiore_inv_FFA, the function converts 
 #' Free Fatty Acids (FFA) values to Area Under Curve (AUC) as part of the preprocessing.
@@ -60,7 +57,7 @@ library(tidyr)
 #'       \item{- \strong{Insulin to Glucose Ratio}: Inversed to represent IS}{}
 #'       \item{- \strong{Insulin Sensitivity Index basal}: IS index}{}
 #'       \item{- \strong{Bennett Index}: An IS index}{}
-#'       \item{- \strong{HOMA-IR-inv (Revised)}: Revised HOMA-IR, Inversed to represent IS Index}{}
+#'       \item{- \strong{HOMA-IR-inv (Revised)}: Standard HOMA-IR via the mg/dL/405 form; numerically equals HOMA-IR_inv}{}
 #'     }
 #'   }
 #'   \item{\strong{ogtt}:}{
@@ -176,18 +173,18 @@ isi_calculator <- function(data, category = c("fasting", "ogtt", "adipo", "trace
       data <- data %>%
         dplyr::mutate(
           # Unit conversion
-          I0_microU_ml = if_else(!is.na(I0), I0 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L * 6 = microU/ml)
+          I0_microU_ml = if_else(!is.na(I0), I0 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L / 6 = microU/ml)
           G0_mg_dl = if_else(!is.na(G0), G0 * 18, NA_real_), # Convert mmol/L to mg/dL (mmol/L * 18 = mg/dL)
           Fasting_inv = -1*(I0_microU_ml), # Fasting Insulin Sensitivity
           Raynaud = 40 / I0_microU_ml, # Raynaud Index
-          Homa_IR_inv = -1*((G0_mg_dl * I0_microU_ml) / 22.5), # HOMA-IR (Revised) IS Index
+          Homa_IR_inv = -1*((G0 * I0_microU_ml) / 22.5), # HOMA-IR, glucose in mmol/L (Matthews 1985, doi:10.1007/BF00280883; Suleman 2024 Table 2)
           Firi = (G0_mg_dl * I0_microU_ml) / 25, # Fasting Insulin Resistance Index which is IS
           Quicki = 1 / (log(G0_mg_dl) + log(I0_microU_ml)), # Quantitative Insulin Sensitivity Check Index
           Belfiore_basal = 2 / ((I0_microU_ml * G0) + 1), # Belfiore Index
           Ig_ratio_basal = -1*(I0_microU_ml / G0), # Insulin to Glucose Ratio converted to IS
           Isi_basal = 10000 / (G0_mg_dl * I0_microU_ml), # Insulin Sensitivity Index basal
           Bennett = 1 / (log(I0_microU_ml) * log(G0_mg_dl)), # Bennett Index
-          HOMA_IR_rev_inv = -1*((I0_microU_ml * G0_mg_dl) / 405) # HOMA-IR (Revised) IS Index
+          HOMA_IR_rev_inv = -1*((I0_microU_ml * G0_mg_dl) / 405) # Standard HOMA-IR via mg/dL/405; numerically equals Homa_IR_inv (mmol/L/22.5)
         ) # 10 fasting based indices
       
     }
@@ -204,18 +201,18 @@ isi_calculator <- function(data, category = c("fasting", "ogtt", "adipo", "trace
       
       data <- data %>%
         dplyr::mutate(
-          I0_microU_ml = if_else(!is.na(I0), I0 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L * 6 = microU/ml)
+          I0_microU_ml = if_else(!is.na(I0), I0 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L / 6 = microU/ml)
           G0_mg_dl = if_else(!is.na(G0), G0 * 18, NA_real_), # Convert mmol/L to mg/dL (mmol/L * 18 = mg/dL)
-          I30_microU_ml = if_else(!is.na(I30), I30 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L * 6 = microU/ml)
+          I30_microU_ml = if_else(!is.na(I30), I30 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L / 6 = microU/ml)
           G30_mg_dl = if_else(!is.na(G30), G30 * 18, NA_real_), # Convert mmol/L to mg/dL (mmol/L * 18 = mg/dL)
-          I120_microU_ml = if_else(!is.na(I120), I120 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L * 6 = microU/ml)
+          I120_microU_ml = if_else(!is.na(I120), I120 / 6, NA_real_), # Convert pmol/L to microU/ml (pmol/L / 6 = microU/ml)
           G120_mg_dl = if_else(!is.na(G120), G120 * 18, NA_real_), # Convert mmol/L to mg/dL (mmol/L * 18 = mg/dL)
           I_AUC = if_else(!is.na(I0) & !is.na(I30) & !is.na(I120),
                           (1/2) * ((I30 + I0) * 30 + (I120 + I30) * 90), NA_real_), # Insulin AUC
           G_AUC = if_else(!is.na(G0) & !is.na(G30) & !is.na(G120),
                           (1/2) * ((G30 + G0) * 30 + (G120 + G30) * 90), NA_real_), # Glucose AUC
-          I_mean = tidyr::replace_na(rowMeans(cbind(I0, I30, I120), na.rm = TRUE), NA_real_), # Mean insulin
-          G_mean = tidyr::replace_na(rowMeans(cbind(G0, G30, G120), na.rm = TRUE), NA_real_), # Mean glucose
+          I_mean = rowMeans(cbind(I0_microU_ml, I30_microU_ml, I120_microU_ml), na.rm = TRUE), # Mean insulin (microU/ml) for Matsuda_ISI
+          G_mean = rowMeans(cbind(G0_mg_dl, G30_mg_dl, G120_mg_dl), na.rm = TRUE), # Mean glucose (mg/dl) for Matsuda_ISI
           
           # OGTT-based calculations here
           Isi_120 = 10000 / (G120_mg_dl * I120_microU_ml), # Insulin Sensitivity Index 120
@@ -224,14 +221,14 @@ isi_calculator <- function(data, category = c("fasting", "ogtt", "adipo", "trace
           Gutt_index = (75000 + (G0_mg_dl - G120_mg_dl) * 0.19 * weight) / (120 * ((G0_mg_dl + G120_mg_dl) / 2) * log((I0_microU_ml + I120_microU_ml) / 2)), # Gutt Index
           Avignon_Si0 = 1e8 / ((G0_mg_dl * I0_microU_ml) * weight * 150), # Avignon Index at 0 min 
           Avignon_Si120 = 1e8 / ((G120_mg_dl * I120_microU_ml) * weight * 150), # Avignon Index at 120 min
-          Avignon_Sim = (mean(c(Avignon_Si120, Avignon_Si0), na.rm = TRUE) * ((Avignon_Si0 + Avignon_Si120) / 2)), # Avignon Index mean
+          Avignon_Sim = ((mean(Avignon_Si120, na.rm = TRUE) / mean(Avignon_Si0, na.rm = TRUE)) * Avignon_Si0 + Avignon_Si120) / 2, # Avignon Index mean; w = mean(Si120)/mean(Si0) balances basal vs 2h (Suleman 2024 Table 2; cf. Avignon 1999, doi:10.1038/sj.ijo.0800864)
           Modified_stumvoll = 0.156 - (0.0000459 * I120) - (0.000321 * I0) - (0.00541 * G120), # Modified Stumvoll Index
           Stumvoll_Demographics = 0.222 - (0.00333 * bmi) - (0.0000779 * I120) - (0.000422 * age), # Stumvoll Index with Demographics
           Glu_Auc_Mean = ((15 * G0_mg_dl + 60 * G30_mg_dl + 45 * G120_mg_dl) / 120), # Mean Glucose AUC
           Insu_Auc_Mean = ((15 * I0_microU_ml + 60 * I30_microU_ml + 45 * I120_microU_ml) / 120), # Mean Insulin AUC
           Matsuda_Auc = 10000 / (sqrt(G0_mg_dl * I0_microU_ml * Glu_Auc_Mean * Insu_Auc_Mean)), # Matsuda Index
-          Matsuda_ISI = 10000 / (sqrt(G0_mg_dl * I0_microU_ml * G_mean * I_mean)), # Matsuda Index
-          BigttSi = exp(4.90 - (0.00402 * I0) - (0.000565 * I30) - (0.00127 * I120) - (0.152 * G0) - (0.00871 * G30) - (0.0373 * G120) - if_else(sex == 1, 0.145, 0) - (0.0376 * bmi)), # BIGTT-Si
+          Matsuda_ISI = 10000 / (sqrt(G0_mg_dl * I0_microU_ml * G_mean * I_mean)), # Matsuda Index (all terms in mg/dl & microU/ml; Matsuda & DeFronzo 1999, doi:10.2337/diacare.22.9.1462)
+          BigttSi = exp(4.90 - (0.00402 * I0) - (0.000556 * I30) - (0.00127 * I120) - (0.152 * G0) - (0.00871 * G30) - (0.0373 * G120) - if_else(sex == 1, 0.145, 0) - (0.0376 * bmi)), # BIGTT-Si (I30 coeff 0.000556 per Suleman 2024 Table 2; Hansen 2007, doi:10.2337/dc06-1240)
           Ifc_inv = -1*(log(I120 / I0)), # Insulinogenic Index converted to IS
           HIRI_inv = -1 * (((G0_mg_dl + G30_mg_dl) / 100 / 2) * ((I0_microU_ml + I30_microU_ml) / 2)), # Hepatic Insulin Resistance Index converted to IS
           Belfiore_isi_gly = (2 / ((I_AUC * G_AUC) + 1))  # Belfiore ISI Glycemia
@@ -268,13 +265,14 @@ isi_calculator <- function(data, category = c("fasting", "ogtt", "adipo", "trace
           
           # Adipose-related calculations here
           Revised_QUICKI = 1 / (log10(I0_microU_ml) + log10(G0_mg_dl) + log10(FFA)),
-          VAI_Men_inv = -1 * ((waist / 39.68 + (1.88 * bmi)) * (TG_mg_dl / 1.03) * (1.31 / HDL_c_mg_dl)),
-          VAI_Women_inv = -1 * ((waist / 36.58 + (1.89 * bmi)) * (TG_mg_dl / 0.81) * (1.52 / HDL_c_mg_dl)),
+          # VAI: waist divided by the whole (const + slope*bmi) denominator; TG & HDL_c in mmol/L (Amato 2010, doi:10.2337/dc09-1825)
+          VAI_Men_inv = -1 * ((waist / (39.68 + (1.88 * bmi))) * (TG / 1.03) * (1.31 / HDL_c)),
+          VAI_Women_inv = -1 * ((waist / (36.58 + (1.89 * bmi))) * (TG / 0.81) * (1.52 / HDL_c)),
           TG_HDL_C_inv = -1 * (TG_mg_dl / HDL_c_mg_dl),
           TyG_inv = -1 * (log(TG_mg_dl * G0_mg_dl / 2)),
-          LAP_Men_inv = -1 * ((waist - 65) * TG_mg_dl),
-          LAP_Women_inv = -1 * ((waist - 58) * TG_mg_dl),
-          McAuley_index = exp(2.63 - 0.28 * log(I0_microU_ml) - 0.31 * log(TG_mg_dl)),
+          LAP_Men_inv = -1 * ((waist - 65) * TG),   # TG in mmol/L (Kahn 2005, doi:10.1186/1471-2261-5-26)
+          LAP_Women_inv = -1 * ((waist - 58) * TG), # TG in mmol/L (Kahn 2005)
+          McAuley_index = exp(2.63 - 0.28 * log(I0_microU_ml) - 0.31 * log(TG)), # TG in mmol/L (McAuley 2001, doi:10.2337/diacare.24.3.460)
           Adipo_inv = -1 * (FFA * I0_microU_ml),
           Belfiore_inv_FFA = -1 * (2 / ((I_AUC * FFA_AUC) + 1))
         ) # 10 Adipo indices

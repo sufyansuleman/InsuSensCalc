@@ -60,7 +60,6 @@ Load the necessary R libraries:
 library(dplyr)
 library(magrittr)
 library(tibble)
-library(tidyr)
 ```
 
 If missing any, install via `install.packages("package_name")`.
@@ -116,7 +115,7 @@ Indices calculated from fasting measurements are essential for assessing baselin
 - **Insulin to Glucose Ratio**: Inversed to represent IS.
 - **Insulin Sensitivity Index basal**: An IS index.
 - **Bennett Index**: An IS index.
-- **HOMA-IR-inv (Revised)**: Revised HOMA-IR, inversed to represent IS Index.
+- **HOMA-IR-inv (Revised)**: Standard HOMA-IR via the mg/dL ÷405 form; numerically equals HOMA-IR_inv.
 
 ### OGTT Measurements
 
@@ -130,7 +129,7 @@ OGTT-based indices are derived from glucose and insulin responses to an oral glu
 - **IG_ratio_120_inv**: Insulin to Glucose Ratio at 120, inversed to represent IS.
 - **Avignon_Si0**: Avignon Index at 0 min.
 - **Avignon_Si120**: Avignon Index at 120 min.
-- **Avignon_Sim**: Avignon Index mean of the two Avignon indices.
+- **Avignon_Sim**: Avignon Index, the weighted mean of the two Avignon indices (Avignon 1999).
 - **Modified_stumvoll**: Modified Stumvoll Index.
 - **Stumvoll_Demographics**: Stumvoll Index with demographics, age, and BMI.
 - **Glu_Auc_Mean**: Mean Glucose AUC.
