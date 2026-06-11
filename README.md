@@ -5,6 +5,7 @@
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/InsuSensCalc)](https://cran.r-project.org/package=InsuSensCalc)
 [![GitHub release downloads](https://img.shields.io/github/downloads/sufyansuleman/InsuSensCalc/total.svg)](https://github.com/sufyansuleman/InsuSensCalc/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/780001797.svg)](https://doi.org/10.5281/zenodo.20647742)
 <!-- badges: end -->
 
 ## Overview
@@ -201,11 +202,30 @@ print(result)
 
 ## Citation
 
-If you use `InsuSensCalc` in your research, please cite the study that motivated this package and mention the package in your methods section. This package was developed from and used in the published study:
+If you use `InsuSensCalc` in your research, please cite both the package and the underlying study.
 
-- PubMed: https://pubmed.ncbi.nlm.nih.gov/38635292/
+### Citing the package
 
-Suggested citation language:
+Suleman, S. (2025). InsuSensCalc: An R package for computing insulin sensitivity indices. Zenodo. <https://doi.org/10.5281/zenodo.20647742>
+
+Or in BibTeX:
+
+```bibtex
+@software{suleman_insusensecalc_2025,
+  author    = {Suleman, Sufyan},
+  title     = {InsuSensCalc: An R package for computing insulin sensitivity indices},
+  year      = {2025},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.20647742},
+  url       = {https://doi.org/10.5281/zenodo.20647742}
+}
+```
+
+### Citing the underlying study
+
+This package was developed from and used in the published study:
+
+- PubMed: <https://pubmed.ncbi.nlm.nih.gov/38635292/>
 
 > Suleman S, et al. InsuSensCalc package for insulin sensitivity index calculation. Study available at PubMed PMID 38635292. Please cite the package and the underlying study when using it in your research.
 
