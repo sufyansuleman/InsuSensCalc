@@ -8,7 +8,8 @@ Description: Facilitates the calculation of 40 different insulin sensitivity
     measurement values. Enables easy and accurate assessment of insulin
     sensitivity, critical for understanding and managing metabolic disorders
     like diabetes and obesity. Indices calculated are described in
-    Gastaldelli (2022) <doi:10.1002/oby.23503> and
+    Gastaldelli (2022) <doi:10.1002/oby.23503>,
+    Suleman (2024) <doi:10.1210/clinem/dgae275>, and
     Lorenzo (2010) <doi:10.1210/jc.2010-1144>.
 License: MIT + file LICENSE
 Encoding: UTF-8

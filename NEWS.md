@@ -40,6 +40,8 @@ results from 0.1.0 are not directly comparable to 0.0.1 for these columns.
 - Documentation now states the correct triglyceride (`* 88.57`) and HDL-C
   (`* 38.67`) unit-conversion factors, and corrects a reversed insulin
   conversion comment.
+- Added a citation for the package's source publication (Suleman 2024,
+  <doi:10.1210/clinem/dgae275>) to the `DESCRIPTION` field.
 
 # InsuSensCalc 0.0.1 (2024-04-02)
 

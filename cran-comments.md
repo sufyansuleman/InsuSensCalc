@@ -28,6 +28,6 @@ There are no reverse dependencies on CRAN.
 ## Notes
 
 * Examples run on the bundled example_data and complete in well under 5 seconds.
-* DOIs in the Description (<doi:10.1002/oby.23503>, <doi:10.1210/jc.2010-1144>)
-  resolve to the cited publications.
+* DOIs in the Description (<doi:10.1002/oby.23503>, <doi:10.1210/clinem/dgae275>,
+  <doi:10.1210/jc.2010-1144>) resolve to the cited publications.
 * The package writes no files and makes no changes to the user's environment.
