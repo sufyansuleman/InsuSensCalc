@@ -1,4 +1,4 @@
-# InsuSensCalc
+# InsuSensCalc — Insulin Sensitivity Calculator (ISC)
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/InsuSensCalc)](https://cran.r-project.org/package=InsuSensCalc)
@@ -10,7 +10,7 @@
 
 ## Overview
 
-InsuSensCalc provides reproducible calculators for a wide range of insulin sensitivity indices derived from common clinical and research measurements (fasting, OGTT, adipose tissue, tracer studies and DXA). It is designed to be:
+InsuSensCalc — short for **Insu**lin **Sens**itivity **Calc**ulator, and referred to as **ISC** for brevity — provides reproducible calculators for a wide range of insulin sensitivity indices derived from common clinical and research measurements (fasting, OGTT, adipose tissue, tracer studies and DXA). It is designed to be:
 
 - **Reliable**: implements validated formulas used in published research.
 - **Lightweight**: minimal dependencies and straightforward installation.
