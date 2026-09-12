@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # Insulin Sensitivity Indices Calculator
 
-The 'isi_calculator' function is a comprehensive tool designed to calculate a wide array of surrogate insulin sensitivity indices. This vignette provides a detailed guide on installing the package, understanding its usage, and interpreting the output effectively.
+The 'isi_calculator' function (short for Insulin Sensitivity Indices calculator) is the main function of the 'InsuSensCalc' package (Insulin Sensitivity Calculator, or ISC). It takes a dataframe of clinical measurements and appends a wide array of surrogate insulin sensitivity indices as new columns. This vignette provides a detailed guide on installing the package, understanding its usage, and interpreting the output effectively.
 
 ## Installation
 

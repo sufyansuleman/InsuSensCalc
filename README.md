@@ -83,7 +83,7 @@ remotes::install_github("sufyansuleman/InsuSensCalc")
 
 ### Function Overview
 
-`isi_calculator` takes a dataframe as input, calculating insulin sensitivity indices for:
+The package has a single main function, `isi_calculator`, where *isi* stands for **Insulin Sensitivity Indices**. It takes a dataframe as input and returns the same data with the requested insulin sensitivity indices appended as new columns. Indices are grouped by the type of measurement they are derived from (fasting, OGTT, adipose tissue, tracer/DXA), and you choose which groups to compute with the `category` argument.
 
 ### Input Parameters
 
