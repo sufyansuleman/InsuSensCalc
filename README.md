@@ -57,7 +57,7 @@ This package was developed as part of the study available at https://pubmed.ncbi
 
 Load the necessary R libraries:
 
-```{r setup-libraries}
+```r
 library(dplyr)
 library(magrittr)
 library(tibble)
@@ -69,13 +69,13 @@ If missing any, install via `install.packages("package_name")`.
 
 Install from CRAN or GitHub:
 
-```{r install-cran}
+```r
 install.packages("InsuSensCalc")
 ```
 
 Or directly from GitHub:
 
-```{r install-github}
+```r
 remotes::install_github("sufyansuleman/InsuSensCalc")
 ```
 
@@ -189,7 +189,7 @@ Column names are case sensitive and must match exactly.
 
 Calculate indices with your formatted data:
 
-```{r calculate-indices}
+```r
 # Define or load your dataframe 'your_data'
 
 result <- isi_calculator(your_data, "fasting")
