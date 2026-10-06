@@ -49,6 +49,11 @@ It also performs the following unit conversions as part of the calculations:
 \item HDL cholesterol: Converts from mmol/L to mg/dL using the formula \code{value * 38.67}.
 }
 
+As of version 0.2.0, \code{Quicki} uses log base 10 as published (Katz 2000) and
+\code{Firi} is inverted to represent insulin sensitivity with glucose in mmol/L
+(Duncan 1995). Both differ numerically from version 0.1.0; see \code{NEWS.md} for
+the conversion formulas.
+
 Additionally, for the calculation of Belfiore_inv_FFA, the function converts
 Free Fatty Acids (FFA) values to Area Under Curve (AUC) as part of the preprocessing.
 

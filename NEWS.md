@@ -1,3 +1,75 @@
+# InsuSensCalc 0.2.0 (2026-10-06)
+
+## Formula corrections (change computed values)
+
+Two formulas were checked against their original publications and corrected.
+**Both fixes change the numeric output of the affected column**, so results from
+0.2.0 are not directly comparable to 0.1.0 for `Quicki` and `Firi`. Each change is
+exactly recoverable, so existing results can be converted without recomputing: see
+the conversion formulas below.
+
+- **`Quicki`**: now uses log base 10, as published (Katz et al. 2000,
+  <doi:10.1210/jcem.85.7.6661>). Earlier versions used the natural logarithm, which
+  returned values a constant factor of `ln(10)` too small. Because the error was a
+  positive multiplicative constant, rank-based results (Spearman correlations,
+  rank-inverse-normal transforms, quantile groupings) and standardised regression
+  coefficients were **unaffected**; only the absolute values were wrong, and they
+  could not be compared with published QUICKI values or cut-offs. Published QUICKI
+  values typically fall between about 0.30 and 0.45, which the corrected column now
+  reproduces.
+
+  To convert a value computed with 0.1.0 or earlier:
+
+  ```r
+  Quicki_0.2.0 <- Quicki_0.1.0 * 2.302585
+  ```
+
+- **`Firi`**: now inverted to represent insulin sensitivity, and glucose is taken in
+  mmol/L as in the original definition (Duncan et al. 1995,
+  <doi:10.1016/S0140-6736(95)92143-5>). Earlier versions returned FIRI as a
+  *resistance* index, unnegated, while the documentation stated it was inverted to
+  represent sensitivity. `Firi` therefore pointed in the opposite direction to every
+  other column in the package, and analyses that treated all outputs as sensitivity
+  measures would have recovered the wrong sign for this index. Glucose was also
+  supplied in mg/dL rather than mmol/L, inflating the magnitude 18-fold.
+
+  To convert a value computed with 0.1.0 or earlier:
+
+  ```r
+  Firi_0.2.0 <- -(Firi_0.1.0 / 18)
+  ```
+
+## Documentation
+
+- Added a "Where these indices come from" section to the README, recording for every
+  index the publication that defined it and the population that publication studied
+  (country, cohort, sample size, and ethnic composition where the paper reports it).
+  Every index in the package was derived in Europe, the United States, New Zealand or
+  Mexico; none was derived in an Asian, African, Middle Eastern or South Asian cohort.
+  Most source papers do not report ethnic composition at all, and four derivations are
+  explicitly not white European: HIRI (Mexican American), the basal insulin sensitivity
+  index (Pima Indian), the Gutt Index (Black and White), and LAP (multi-ethnic US).
+- Documented three rows where the attribution could not be established: the Bennett
+  Index has no identifiable primary publication, the 120-minute insulin sensitivity
+  index rests on a single secondary attribution, and the lipolysis index has no
+  established source.
+- Added a "Known differences between this package and the original publications"
+  section recording where the implementation departs from the published definition:
+  `LIRI_inv` uses the mean of the 0 and 30 minute insulin values rather than the
+  0 to 120 minute insulin AUC; `HIRI_inv` approximates the published 0 to 30 minute
+  AUC form; the Belfiore indices use unnormalised areas; `Homa_IR_inv` and
+  `HOMA_IR_rev_inv` are algebraically identical; and `Avignon_Sim` depends on the mean
+  of the rows supplied, so its value changes when a dataset is subset.
+- Added links to ISAT, a browser-based calculator and a Linux command-line tool that
+  compute the same indices without requiring R, and recorded that ISAT is now the
+  reference implementation. ISAT additionally corrects the Gutt and Belfiore indices,
+  which remain unchanged in this package and are documented as known differences.
+
+## Tests
+
+- Pinned the corrected `Quicki` and `Firi` values, added formula-identity tests for
+  both, and added a guard that fails if `Quicki` regresses to the natural logarithm.
+
 # InsuSensCalc 0.1.0 (2026-06-09)
 
 ## Formula corrections (change computed values)

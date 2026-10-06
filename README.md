@@ -4,6 +4,8 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/InsuSensCalc)](https://cran.r-project.org/package=InsuSensCalc)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/InsuSensCalc)](https://cran.r-project.org/package=InsuSensCalc)
 [![GitHub release downloads](https://img.shields.io/github/downloads/sufyansuleman/InsuSensCalc/total.svg)](https://github.com/sufyansuleman/InsuSensCalc/releases)
+[![ISAT web app](https://img.shields.io/badge/ISAT-web%20app-2a9d8f.svg)](https://sufyansuleman.github.io/isat/)
+[![ISAT CLI](https://img.shields.io/badge/ISAT-command%20line-264653.svg)](https://github.com/sufyansuleman/isat/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/780001797.svg)](https://doi.org/10.5281/zenodo.20647742)
 <!-- badges: end -->
@@ -15,6 +17,54 @@ InsuSensCalc (**Insu**lin **Sens**itivity **Calc**ulator, or **ISC** for short) 
 - **Reliable**: implements validated formulas used in published research.
 - **Lightweight**: minimal dependencies and straightforward installation.
 - **Reproducible**: consistent naming and outputs so results can be compared across studies.
+
+## Three ways to use this calculator
+
+The same insulin sensitivity indices are available as a browser app, a command-line tool and
+this R package. Pick whichever fits how you work; you do not need R to use the first two.
+
+| Interface | Best for | Where to get it |
+|---|---|---|
+| **ISAT web app** | one-off calculations, exploring a dataset, teaching. Nothing to install, runs entirely in your browser, and your data are never uploaded. Handles up to 100,000 rows per file. | <https://sufyansuleman.github.io/isat/> |
+| **ISAT command line** (`isat`) | batch jobs, HPC and SLURM arrays, automated pipelines. A standalone binary for Linux x86-64 and ARM64 that needs no R, Python or Node and no root. | [Latest release](https://github.com/sufyansuleman/isat/releases/latest) |
+| **InsuSensCalc** (this R package) | working inside an existing R or tidyverse analysis. | [CRAN](https://cran.r-project.org/package=InsuSensCalc) |
+
+### Using the command-line tool
+
+```bash
+curl -L https://github.com/sufyansuleman/isat/releases/latest/download/isat-linux-x64.tar.gz | tar xz
+./isat --help
+```
+
+```bash
+isat check cohort.csv
+isat calculate cohort.csv -o results.csv
+isat merge res_*.csv -o results.csv
+isat transform results.csv -o rint.csv --method rint --within-sex --input cohort.csv
+```
+
+Chunked for a SLURM array job:
+
+```bash
+isat calculate cohort.csv -o res_${SLURM_ARRAY_TASK_ID}.csv --chunk ${SLURM_ARRAY_TASK_ID}/20
+```
+
+A single-file alternative, `isat.mjs`, runs under Node.js 20 or newer. Source for both the web
+app and the command-line tool is at <https://github.com/sufyansuleman/isat>
+(DOI [10.5281/zenodo.23190906](https://doi.org/10.5281/zenodo.23190906)).
+
+### How the three relate
+
+The web app and the command-line tool are version-matched: both are ISAT 0.1.0, built from one
+codebase and one calculation engine, and every build checks automatically that they produce
+byte-identical output for the same input and settings.
+
+**ISAT is the reference implementation.** This R package is its predecessor. Where the formulas
+agree, ISAT reproduces InsuSensCalc 0.1.0. Four indices were deliberately corrected in ISAT to
+match their published definitions and so will differ from this package: **QUICKI**, **FIRI**,
+**Gutt** and the **Belfiore** indices. Every difference is listed in `validation/legacy-differences.md`
+in the ISAT repository and on the web app's Methods page. If you need results that match the
+published definitions of those four, use ISAT.
 
 ## Who should use this package?
 
@@ -49,7 +99,9 @@ This package was developed as part of the study available at https://pubmed.ncbi
 - Uses standard clinical and research variable names to support reproducible workflows.
 - Includes a citation section so users can properly acknowledge the package and underlying study.
 
-> Note: This README is the package landing page. No additional pkgdown website is included at this time.
+> Note: This README is the R package's landing page; there is no separate pkgdown
+> documentation site for it. The ISAT web app linked above is a calculator, not
+> documentation for this package.
 
 ## Setup
 
@@ -110,8 +162,8 @@ Indices calculated from fasting measurements are essential for assessing baselin
 - **Fasting Insulin**: Inversed to represent IS.
 - **Raynaud Index**: An IS index.
 - **HOMA-IR_inv**: Inversed to represent IS.
-- **FIRI**: Fasting Insulin Resistance Index, inversed to represent IS.
-- **QUICKI**: Quantitative Insulin Sensitivity Check Index, an IS index.
+- **FIRI**: Fasting Insulin Resistance Index, inversed to represent IS. Glucose in mmol/L (corrected in 0.2.0).
+- **QUICKI**: Quantitative Insulin Sensitivity Check Index, an IS index. Uses log base 10 as published (corrected in 0.2.0).
 - **Belfiore basal**: An IS index.
 - **Insulin to Glucose Ratio**: Inversed to represent IS.
 - **Insulin Sensitivity Index basal**: An IS index.
@@ -163,6 +215,103 @@ These specialized indices involve tracer and dual-energy X-ray absorptiometry (D
 - **Lipo_inv**: Lipolysis Index, inversed to represent IS.
 - **ATIRI_inv**: Adipose Tissue Insulin Resistance Index, inversed to represent IS.
 
+
+## Where these indices come from
+
+Every index in this package is taken from a published source. This section records, for each
+one, which paper first defined it and which population that paper studied. The package does
+not re-derive any formula.
+
+Two points are worth stating plainly before the table.
+
+**All of these indices were derived in Europe, the United States, New Zealand or Mexico.**
+No index in this package was derived in an Asian, African, Middle Eastern or South Asian
+cohort. That is the clearest and most consequential pattern here, and it is not a criticism
+of the original papers; it reflects where insulin clamp studies have historically been done.
+
+**Most of the source papers do not report the ethnic composition of their samples at all.**
+Where a paper does report it, the table quotes it. Where it does not, the table says "Not
+reported" rather than inferring it from the country. Four derivations are explicitly not
+white European: HIRI (Mexican American), the basal insulin sensitivity index (Pima Indian),
+the Gutt Index (Black and White), and LAP (multi-ethnic US). Readers who assume the whole
+set is white European will be wrong about those four.
+
+### Derivation sources
+
+| Index or indices | Primary reference | Country | Cohort or setting | N | Ethnic composition as reported |
+|---|---|---|---|---|---|
+| HOMA-IR_inv, HOMA-IR-inv (Revised) | Matthews et al. 1985, *Diabetologia* 28:412 (doi:10.1007/BF00280883) | UK (Oxford) | Modelling study validated against clamp and IVGTT | Not reported in abstract | Not reported |
+| Raynaud Index | Raynaud et al. 1999, *Diabetes Care* 22:1003 (research letter) | France (Montpellier) | Not described | Not reported | Not reported |
+| FIRI | Duncan et al. 1995, *Lancet* 346:120 (research letter) | UK | Not a derivation cohort study | Not reported | Not reported |
+| QUICKI | Katz et al. 2000, *J Clin Endocrinol Metab* 85:2402 | USA (NIH Bethesda, with Indiana validation) | Clinical research volunteers | 56 derivation, 35 validation | Not reported |
+| Belfiore basal, Belfiore_ISI_gly, Belfiore_inv_FFA | Belfiore et al. 1998, *Mol Genet Metab* 63:134 | Italy (Catania) | Normal, overweight, IGT and NIDDM subjects and relatives | Not reported in abstract | Not reported |
+| Insulin Sensitivity Index basal | Hanson et al. 2000, *Am J Epidemiol* 151:190 | USA (Arizona) | Gila River Indian Community, 1982 to 1997 | 1,731 | **Pima Indian (Native American)** |
+| Bennett Index | **No primary reference identified.** Secondary sources attribute the formula to Anderson et al. 1995, *Am J Epidemiol* 142:724 (IRAS methodologic substudy, USA, n=55) | USA, if the attribution holds | IRAS substudy | 55 | Not reported for the substudy |
+| Insulin Sensitivity Index (120 min) | **Unverified.** One review attributes it to Sluiter et al. 1976, *Diabetes* 25:245 | Netherlands (Groningen) | Not established | Not established | Not reported |
+| Cederholm Index | Cederholm and Wibell 1990, *Diabetes Res Clin Pract* 10:167 | Sweden (Uppsala) | NGT, IGT and NIDDM groups, 75 g OGTT | Not reported in abstract | Not reported |
+| Gutt Index | Gutt et al. 2000, *Diabetes Res Clin Pract* 47:177 | USA (Miami) | Community volunteers aged 17 to 66 | 135 | **Black and White: 22 Black / 28 White men, 31 Black / 54 White women** |
+| Avignon_Si0, Avignon_Si120, Avignon_Sim | Avignon et al. 1999, *Int J Obes* 23:512 | France (Montpellier) | OGTT plus insulin-modified FSIVGTT | 47 (31 NGT, 10 IGT, 6 T2D) | Not reported |
+| Modified_stumvoll, Stumvoll_Demographics | Equations: Stumvoll et al. 2001, *Diabetes Care* 24:796. Parent dataset: Stumvoll et al. 2000, *Diabetes Care* 23:295 | Germany (Tuebingen-led multicentre) | Nondiabetic volunteers, clamp plus OGTT | 104 | Not reported |
+| Matsuda ISI, Matsuda ISI AUC | Matsuda and DeFronzo 1999, *Diabetes Care* 22:1462 | USA (San Antonio) | Varying glucose tolerance, OGTT plus clamp | 153 | Not reported |
+| BigttSI | Hansen et al. 2007, *Diabetes Care* 30:257 | Denmark (Steno Diabetes Center) | Participants with both OGTT and IVGTT | 258 | Not reported |
+| HIRI_inv | Abdul-Ghani et al. 2007, *Diabetes Care* 30:89 | USA (San Antonio) | NGT and IGT subjects, OGTT plus labelled-glucose clamp | 155 | **Mexican American, stated in the abstract** |
+| Revised_QUICKI | Perseghin et al. 2001, *J Clin Endocrinol Metab* 86:4776 | Italy (Milan) | Nonobese volunteers, with and without a T2D first-degree relative | 57 | Not reported |
+| VAI_Men_inv, VAI_Women_inv | Amato et al. 2010, *Diabetes Care* 33:920 | Italy (Palermo, Sicily) | AlkaMeSy primary-care database; model fitted on 315 subjects with BMI 20 to 30 | 1,498 | Not reported in the 2010 paper. The descriptor "Caucasian Sicilian" comes from the separate 2011 cut-off paper (*Lipids Health Dis* 10:183, n=1,764) |
+| TG_HDL_C_inv | **No primary derivation reference.** Earliest citable use as an IR marker: McLaughlin et al. 2003, *Ann Intern Med* 139:802 | USA (Stanford) | Non-diabetic overweight volunteers, insulin suppression test | 258 | Not reported |
+| TyG_inv | Simental-Mendia et al. 2008, *Metab Syndr Relat Disord* 6:299. Clamp validation: Guerrero-Romero et al. 2010, *J Clin Endocrinol Metab* 95:3347 (separate cohort, n=99) | **Mexico** (Durango; validation in Guadalajara) | Population-based cluster sample of apparently healthy adults aged 18 to 65 | 748 | Not reported |
+| LAP_Men_inv, LAP_Women_inv | Kahn 2005, *BMC Cardiovasc Disord* 5:26 | USA | NHANES III (1988 to 1994). The 65 and 58 cm waist offsets come from the weighted 18 to 24 year subgroup | 9,180 | **76.0% non-Hispanic white, 10.5% non-Hispanic black, 5.3% Mexican American, 8.1% other. Race-ethnicity was explicitly modelled** |
+| McAuley_index | McAuley et al. 2001, *Diabetes Care* 24:460 | New Zealand (Dunedin) | Normoglycaemic general-population volunteers, euglycaemic clamp | 178 | Not reported |
+| Adipo_inv | **No primary derivation reference.** Validation: Sondergaard et al. 2017, *J Clin Endocrinol Metab* 102:1193 | USA (Mayo Clinic) | Clamp and tracer study | 25 | Not reported |
+| LIRI_inv | Vangipurapu et al. 2011, *Diabetologia* 54:540 | Europe (multicentre RISC / EGIR-RISC) | Non-diabetic participants with endogenous glucose production measured by tracer and clamp | 368 | Not reported |
+| ATIRI_inv | Fabbrini et al. 2012, *J Lipid Res* 53:321 | USA (St. Louis) | Obese non-diabetic subjects, clamp plus palmitate tracer | 47 | Not reported |
+| Lipolysis Index (Lipo_inv) | **No primary reference identified** | Not established | Not established | Not established | Not reported |
+
+Fasting Insulin, Insulin to Glucose Ratio, Insulin fold change, Glu_Auc_Mean and Insu_Auc_Mean
+are arithmetic transformations of the input measurements rather than published indices, so no
+derivation source applies.
+
+### How these entries were checked
+
+Each row was checked against the source record, and most against the paper's own abstract.
+Full texts behind publisher paywalls could not be opened, so sample sizes and ethnic
+composition are missing for several entries where that information sits only in a Methods
+section. Those cells say "Not reported in abstract", which means the information was not
+accessible rather than that the paper omits it.
+
+Three rows are weaker than the rest and are labelled as such in the table: the Bennett Index
+has no identifiable primary paper, the 120-minute insulin sensitivity index rests on a single
+secondary attribution, and the lipolysis index has no established source. Contributions that
+resolve any of these are welcome via an [issue](https://github.com/sufyansuleman/InsuSensCalc/issues).
+
+### Known differences between this package and the original publications
+
+Recorded here for transparency. These are implementation notes, not errors in the source
+papers. Four of these points (QUICKI, FIRI, Gutt and Belfiore) are corrected in ISAT, the
+reference implementation described above; see `validation/legacy-differences.md` in the
+[ISAT repository](https://github.com/sufyansuleman/isat).
+
+**Corrected in 0.2.0.** Two formulas were fixed and now differ numerically from 0.1.0.
+`Quicki` previously used the natural logarithm instead of log base 10, and `Firi` was
+returned as a resistance index without the inversion its documentation claimed, with
+glucose in mg/dL rather than mmol/L. Existing results can be converted exactly:
+
+```r
+Quicki_0.2.0 <- Quicki_0.1.0 * 2.302585
+Firi_0.2.0   <- -(Firi_0.1.0 / 18)
+```
+
+The remaining differences below are unchanged in this package.
+
+- **LIRI** as published uses the insulin area under the curve from 0 to 120 minutes. This
+  package uses the mean of the 0 and 30 minute insulin values.
+- **HIRI** as published uses glucose and insulin areas under the curve from 0 to 30 minutes.
+  This package uses a trapezoid-free approximation of them.
+- **Belfiore** indices as published use areas normalised to a reference mean. This package
+  uses unnormalised areas.
+- **HOMA-IR_inv** and **HOMA-IR-inv (Revised)** are algebraically identical and will always
+  return the same value.
+- **Avignon_Sim** depends on the mean of the rows you pass in, so its value changes if you
+  subset your data. Interpret it only within a fixed dataset.
 
 ## Data Preparation
 

@@ -38,6 +38,11 @@
 #' - Triglycerides: Converts from mmol/L to mg/dL using the formula `value * 88.57`.
 #' - HDL cholesterol: Converts from mmol/L to mg/dL using the formula `value * 38.67`.
 #' 
+#' As of version 0.2.0, \code{Quicki} uses log base 10 as published (Katz 2000) and
+#' \code{Firi} is inverted to represent insulin sensitivity with glucose in mmol/L
+#' (Duncan 1995). Both differ numerically from version 0.1.0; see \code{NEWS.md} for
+#' the conversion formulas.
+#'
 #' Additionally, for the calculation of Belfiore_inv_FFA, the function converts 
 #' Free Fatty Acids (FFA) values to Area Under Curve (AUC) as part of the preprocessing.
 #'
@@ -173,8 +178,8 @@ isi_calculator <- function(data, category = c("fasting", "ogtt", "adipo", "trace
           Fasting_inv = -1*(I0_microU_ml), # Fasting Insulin Sensitivity
           Raynaud = 40 / I0_microU_ml, # Raynaud Index
           Homa_IR_inv = -1*((G0 * I0_microU_ml) / 22.5), # HOMA-IR, glucose in mmol/L (Matthews 1985, doi:10.1007/BF00280883; Suleman 2024 Table 2)
-          Firi = (G0_mg_dl * I0_microU_ml) / 25, # Fasting Insulin Resistance Index which is IS
-          Quicki = 1 / (log(G0_mg_dl) + log(I0_microU_ml)), # Quantitative Insulin Sensitivity Check Index
+          Firi = -1*((G0 * I0_microU_ml) / 25), # FIRI, glucose in mmol/L (Duncan 1995, doi:10.1016/S0140-6736(95)92143-5); inversed to represent IS
+          Quicki = 1 / (log10(G0_mg_dl) + log10(I0_microU_ml)), # QUICKI, log base 10 as published (Katz 2000, doi:10.1210/jcem.85.7.6661)
           Belfiore_basal = 2 / ((I0_microU_ml * G0) + 1), # Belfiore Index
           Ig_ratio_basal = -1*(I0_microU_ml / G0), # Insulin to Glucose Ratio converted to IS
           Isi_basal = 10000 / (G0_mg_dl * I0_microU_ml), # Insulin Sensitivity Index basal

@@ -1,6 +1,6 @@
 # File: test-isi_values.R
-# Numeric regression tests pinning the formula corrections made in 0.1.0 and a
-# spread of unchanged indices. Values are computed from the bundled example_data.
+# Numeric regression tests pinning the formula corrections made in 0.1.0 and 0.2.0
+# and a spread of unchanged indices. Values are computed from the bundled example_data.
 
 library(testthat)
 library(InsuSensCalc)
@@ -33,6 +33,24 @@ test_that("VAI uses the grouped denominator and mmol/L lipids (Amato 2010)", {
   expect_equal(res$VAI_Women_inv[1], expected_women, tolerance = 1e-9)
 })
 
+test_that("QUICKI uses log base 10 as published (Katz 2000)", {
+  r <- example_data[1, ]
+  expect_equal(res$Quicki[1],
+               1 / (log10(r$G0 * 18) + log10(r$I0 / 6)),
+               tolerance = 1e-9)
+  # Guard against a regression to natural log, which is 1/ln(10) of the correct value.
+  expect_false(isTRUE(all.equal(res$Quicki[1],
+                                1 / (log(r$G0 * 18) + log(r$I0 / 6)))))
+})
+
+test_that("FIRI is inverted and uses glucose in mmol/L (Duncan 1995)", {
+  r <- example_data[1, ]
+  expect_equal(res$Firi[1], -((r$G0 * (r$I0 / 6)) / 25), tolerance = 1e-9)
+  # FIRI must share the sign convention of the other sensitivity columns.
+  expect_lt(res$Firi[1], 0)
+  expect_equal(res$Firi[1], -0.233333, tolerance = 1e-5)
+})
+
 test_that("both HOMA-IR columns equal the standard HOMA-IR (mmol/L)", {
   r <- example_data[1, ]
   expect_equal(res$Homa_IR_inv[1], -((r$G0 * (r$I0 / 6)) / 22.5), tolerance = 1e-9)
@@ -60,7 +78,7 @@ test_that("a spread of unchanged indices remain stable (row 1)", {
   expect_equal(res$Fasting_inv[1],  -1.166667,  tolerance = 1e-5)
   expect_equal(res$Raynaud[1],       34.285714, tolerance = 1e-5)
   expect_equal(res$Homa_IR_inv[1],  -0.259259,  tolerance = 1e-5)
-  expect_equal(res$Quicki[1],        0.214871,  tolerance = 1e-5)
+  expect_equal(res$Quicki[1],        0.494758,  tolerance = 1e-5)
   expect_equal(res$Isi_120[1],       8.547009,  tolerance = 1e-5)
   expect_equal(res$LIRI_inv[1],     -0.822550,  tolerance = 1e-5)
   expect_equal(res$Lipo_inv[1],     -0.583333,  tolerance = 1e-5)
